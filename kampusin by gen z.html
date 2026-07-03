@@ -1,0 +1,3555 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kampusin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.1.0/iconfont/tabler-icons.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root{
+    /* ===== Coquette Gen-Z palette: pastel jelas, kontras tegas ===== */
+    --cream:#FFF8EE;
+    --ink:#4A3D58;
+    --ink-soft:#897C9B;
+    --pink:#F7C2D6;
+    --pink-deep:#CE5E92;
+    --purple:#CDB8F0;
+    --purple-deep:#8E6FDE;
+    --mint:#FCE791;
+    --mint-deep:#D6A52A;
+    --card:#FFFFFF;
+    --line:rgba(142,111,222,0.20);
+    --lav:#EFE5FB;
+    --lilac:#D6C2F5;
+    --lilac-deep:#7A5BC2;
+    --yellow:#FCE388;
+    --yellow-deep:#B98920;
+    --bow-pink:#EB9CC0;
+    --shadow-soft:0 10px 24px rgba(142,111,222,0.18);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Quicksand',sans-serif;
+    background:
+      radial-gradient(circle at 8% 12%, rgba(252,231,145,0.6) 0%, transparent 38%),
+      radial-gradient(circle at 92% 85%, rgba(205,184,240,0.5) 0%, transparent 42%),
+      var(--cream);
+    color:var(--ink);
+    min-height:100vh;
+  }
+  h1,h2,h3{font-family:'Fredoka',sans-serif; font-weight:600; margin:0; color:var(--lilac-deep);}
+  a{color:inherit; text-decoration:none;}
+  button{font-family:'Quicksand',sans-serif; cursor:pointer; font-weight:600;}
+
+  /* little bow / ribbon accent, reused everywhere as a cute corner sticker */
+  .bow{
+    position:relative; display:inline-block; width:16px; height:12px; flex-shrink:0;
+  }
+  .bow::before, .bow::after{
+    content:''; position:absolute; top:0; width:8px; height:10px;
+    background:var(--bow-pink); border-radius:60% 40% 60% 40%;
+  }
+  .bow::before{ left:0; transform:rotate(-18deg); }
+  .bow::after{ right:0; transform:rotate(18deg); }
+  .bow-corner{
+    position:absolute; top:-8px; right:10px; font-size:15px; pointer-events:none;
+    filter:drop-shadow(0 2px 3px rgba(155,127,224,0.25));
+  }
+  .ribbon-divider{
+    display:flex; align-items:center; gap:8px; margin:0 0 10px;
+  }
+  .ribbon-divider::before, .ribbon-divider::after{
+    content:''; flex:1; height:2px; border-radius:2px;
+    background:repeating-linear-gradient(90deg, var(--lilac) 0 6px, transparent 6px 10px);
+  }
+
+  .app{display:flex; min-height:100vh;}
+
+  .sidebar{
+    width:230px;
+    flex-shrink:0;
+    background:linear-gradient(165deg,var(--lilac-deep) 0%, var(--purple-deep) 55%, var(--pink-deep) 100%); 
+    color:#F8F2FF;
+    padding:1.75rem 1.25rem;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    position:relative;
+    overflow:hidden;
+    box-shadow:4px 0 24px rgba(155,127,224,0.25);
+  }
+  .sidebar::before{
+    content:'✦ ⋆ ｡˚ ✦'; position:absolute; top:8px; right:-4px; font-size:11px;
+    color:rgba(255,255,255,0.35); letter-spacing:2px; writing-mode:vertical-rl;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:2rem; position:relative;
+  }
+  .brand .mark{
+    width:34px; height:34px; border-radius:12px;
+    background:linear-gradient(135deg,var(--yellow),var(--pink));
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fredoka',sans-serif; font-weight:700; font-size:16px; color:var(--lilac-deep);
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    position:relative;
+  }
+  .brand span{font-family:'Fredoka',sans-serif; font-size:19px; font-weight:600; color:#fff;}
+  .brand .bow-corner{top:-10px; right:-6px;}
+
+  .navitem{
+    display:flex; align-items:center; gap:10px;
+    padding:10px 12px; border-radius:12px;
+    font-size:14px; color:#E5D9FA;
+    transition:background .15s;
+    cursor:pointer;
+  }
+  .navitem i{font-size:18px;}
+  .navitem:hover{background:rgba(255,255,255,0.12); color:#fff;}
+  .navitem.active{background:rgba(255,255,255,0.22); color:#fff; box-shadow:inset 0 0 0 1px rgba(255,255,255,0.25);}
+
+  .navlabel{
+    font-size:11px; letter-spacing:.06em; color:#D8C8F4;
+    margin:1.5rem 0 .4rem 12px; text-transform:uppercase;
+  }
+
+  .profile{
+    margin-top:auto; display:flex; align-items:center; gap:10px;
+    padding-top:1rem; border-top:1px dashed rgba(255,255,255,0.25);
+  }
+  .avatar{
+    width:30px; height:30px; border-radius:50%;
+    background:var(--yellow); color:var(--lilac-deep);
+    display:flex; align-items:center; justify-content:center;
+    font-size:12px; font-weight:700;
+  }
+  .profile .name{font-size:13px; color:#fff;}
+  .profile .role{font-size:11px; color:#D8C8F4;}
+  .profile-actions{display:flex; gap:10px; flex-direction:column; width:100%; margin-top:14px; padding-top:14px; border-top:1px dashed rgba(255,255,255,0.25);}
+  .profile-actions-label{font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:#D8C8F4; font-weight:800; margin-bottom:8px;}
+  .btn-profile-action{
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    width:100%; padding:12px 14px; font-size:13px; font-weight:800;
+    border:2.5px solid; border-radius:14px;
+    color:white; background:transparent; cursor:pointer;
+    transition:all .22s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position:relative; overflow:hidden;
+  }
+  .btn-profile-action.reset{
+    border-color:#FFCC33; color:#FFCC33;
+    background:linear-gradient(135deg, rgba(255,204,51,0.2), rgba(255,228,174,0.08));
+    box-shadow:0 4px 14px rgba(255,204,51,0.25), inset 0 1px 0 rgba(255,255,255,0.2);
+  }
+  .btn-profile-action.reset:hover{
+    border-color:#FFE49C; color:#1a1a1a;
+    background:linear-gradient(135deg, #FFCC33 0%, #FFE49C 100%);
+    box-shadow:0 10px 28px rgba(255,204,51,0.5), inset 0 1px 0 rgba(255,255,255,0.4);
+    transform:translateY(-2px);
+  }
+  .btn-profile-action.reset:active{transform:translateY(0);}
+  .btn-profile-action.logout{
+    border-color:#FF99BB; color:#FF99BB;
+    background:linear-gradient(135deg, rgba(255,153,187,0.2), rgba(255,184,218,0.08));
+    box-shadow:0 4px 14px rgba(255,153,187,0.25), inset 0 1px 0 rgba(255,255,255,0.2);
+  }
+  .btn-profile-action.logout:hover{
+    border-color:#FFB8DA; color:#1a1a1a;
+    background:linear-gradient(135deg, #FF99BB 0%, #FFB8DA 100%);
+    box-shadow:0 10px 28px rgba(255,153,187,0.5), inset 0 1px 0 rgba(255,255,255,0.4);
+    transform:translateY(-2px);
+  }
+  .btn-profile-action.logout:active{transform:translateY(0);}
+
+  .main{flex:1; padding:2rem 2.5rem; max-width:1100px;}
+
+  .topbar{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    margin-bottom:1.75rem;
+  }
+  .topbar h1{font-size:26px;}
+  .topbar h1::after{content:' 🎀'; font-size:18px;}
+  .topbar p{margin:.3rem 0 0; color:var(--ink-soft); font-size:14px;}
+
+  .view{display:none;}
+  .view.active{display:block;}
+
+  .grid6{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:16px;
+  }
+  .feature-card{
+    background:var(--card); border:1px solid var(--line); border-radius:20px;
+    padding:1.25rem; cursor:pointer; transition:transform .15s, box-shadow .15s;
+    position:relative; overflow:visible;
+  }
+  .feature-card:hover{transform:translateY(-3px) rotate(-0.3deg); box-shadow:var(--shadow-soft);}
+  .feature-card .icowrap{
+    width:38px; height:38px; border-radius:13px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:19px; margin-bottom:14px; color:white;
+    box-shadow:0 3px 8px rgba(155,127,224,0.25);
+  }
+  .feature-card h3{font-size:15px; margin-bottom:4px; color:var(--ink);}
+  .feature-card p{font-size:12.5px; color:var(--ink-soft); margin:0; line-height:1.5;}
+
+  .streak-banner{
+    background:linear-gradient(120deg,var(--lilac-deep),var(--pink-deep) 60%, var(--mint-deep));
+    border-radius:22px; padding:1.5rem 1.75rem; color:white;
+    display:flex; justify-content:space-between; align-items:center;
+    margin-bottom:1.75rem; position:relative; overflow:hidden;
+  }
+  .streak-banner::after{
+    content:'✨'; position:absolute; top:10px; right:14px; font-size:18px; opacity:.8;
+  }
+  .streak-banner .ring{
+    width:64px; height:64px; border-radius:50%;
+    background:rgba(255,255,255,0.18);
+    display:flex; align-items:center; justify-content:center;
+    font-size:22px; font-weight:600; font-family:'Fredoka',sans-serif;
+    border:3px solid rgba(255,255,255,0.55);
+  }
+  .streak-banner h2{font-size:17px; color:white; margin-bottom:4px;}
+  .streak-banner p{margin:0; font-size:13px; color:rgba(255,255,255,0.9);}
+
+  .page-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem;}
+  .page-head h2{font-size:20px;}
+  .page-head .sub{font-size:12.5px; color:var(--ink-soft); margin-top:3px;}
+  .btn-primary{
+    background:linear-gradient(135deg,var(--lilac-deep),var(--pink-deep)); color:white; border:none; border-radius:14px;
+    padding:9px 16px; font-size:13.5px; font-weight:600; display:flex; align-items:center; gap:6px;
+    box-shadow:0 4px 10px rgba(155,127,224,0.3);
+  }
+  .btn-primary:hover{filter:brightness(1.07);}
+  .btn-ghost{
+    background:transparent; border:1.5px solid var(--lilac); border-radius:14px;
+    padding:8px 14px; font-size:13px; color:var(--lilac-deep); font-weight:600;
+  }
+  .btn-ghost:hover{background:var(--lav);}
+
+  .lab-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:1.5rem;}
+  .lab-room{
+    background:var(--card); border:1px solid var(--line); border-radius:14px; padding:1rem; text-align:center;
+    font-size:13px;
+  }
+  .lab-room .dot{width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:5px;}
+  .slot-table{width:100%; border-collapse:collapse; font-size:13px;}
+  .slot-table th{text-align:left; color:var(--ink-soft); font-weight:600; padding:8px 6px; border-bottom:2px dashed var(--line);}
+  .slot-table td{padding:9px 6px; border-bottom:1px solid var(--line);}
+  .pill{font-size:11.5px; padding:3px 10px; border-radius:20px; font-weight:600;}
+  .pill.open{background:#FFEFAE; color:var(--mint-deep);}
+  .pill.full{background:#FBDCE9; color:var(--pink-deep);}
+  .pill.mine{background:var(--lav); color:var(--purple-deep);}
+
+  .week-grid{display:grid; gap:6px; font-size:12.5px;}
+  .week-grid .day-label{font-weight:600; text-align:center; color:var(--lilac-deep); padding:4px;}
+  .week-grid .time-label{color:var(--ink-soft); padding:10px 4px; text-align:right;}
+  .slot-card{
+    background:var(--lav); border-radius:10px; padding:6px 8px; color:var(--purple-deep); font-weight:600;
+  }
+  .slot-card.pink{background:#FBDCE9; color:var(--pink-deep);}
+  .slot-card.mint{background:#FFEFAE; color:var(--mint-deep);}
+  .slot-card small{display:block; font-weight:400; color:inherit; opacity:.8;}
+
+  .task-row{
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+    background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:.85rem 1rem; margin-bottom:10px;
+  }
+  .task-row input[type=checkbox]{width:18px; height:18px; accent-color:var(--pink-deep); flex-shrink:0;}
+  .task-row .info{flex:1; min-width:0;}
+  .task-row .info .t{font-size:14px; font-weight:600;}
+  .task-row .info .m{font-size:12px; color:var(--ink-soft);}
+  .task-row.done .t{text-decoration:line-through; color:var(--ink-soft);}
+  .badge-deadline{font-size:11.5px; padding:4px 10px; border-radius:10px; font-weight:600; flex-shrink:0;}
+  .badge-deadline.urgent{background:#FBDCE9; color:var(--pink-deep);}
+  .badge-deadline.soon{background:#FFEFAE; color:#9A6E10;}
+  .badge-deadline.ok{background:#E9F8EE; color:#3F9466;}
+  .badge-deadline.normal{background:var(--lav); color:var(--purple-deep);}
+
+  .thread{
+    background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:1rem 1.1rem; margin-bottom:10px;
+  }
+  .thread .top{display:flex; gap:10px; align-items:center; margin-bottom:6px;}
+  .thread .top .tag{font-size:11px; background:var(--lav); color:var(--purple-deep); padding:2px 9px; border-radius:8px; font-weight:600;}
+  .thread h3{font-size:14.5px; margin-bottom:3px; color:var(--ink);}
+  .thread p{font-size:12.5px; color:var(--ink-soft); margin:0 0 8px;}
+  .thread .meta{display:flex; gap:14px; font-size:12px; color:var(--ink-soft);}
+  .thread .meta i{margin-right:4px;}
+
+  .sg-card{
+    background:var(--card); border:1px solid var(--line); border-radius:18px;
+    padding:1rem; display:flex; flex-direction:column; gap:8px; position:relative;
+  }
+  .sg-card::before{
+    content:'🎀'; position:absolute; top:-10px; left:14px; font-size:16px;
+    filter:drop-shadow(0 2px 2px rgba(155,127,224,0.25));
+  }
+  .sg-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .sg-card .tags{display:flex; gap:6px; flex-wrap:wrap;}
+  .sg-card .tags span{font-size:11px; background:var(--lav); color:var(--purple-deep); padding:3px 9px; border-radius:8px;}
+  .sg-avatars{display:flex; margin-left:-2px;}
+  .sg-avatars .a{width:22px; height:22px; border-radius:50%; background:var(--pink-deep); border:2px solid white; margin-left:-6px; font-size:9px; color:white; display:flex; align-items:center; justify-content:center; font-weight:700;}
+  .sg-card .sg-top{display:flex; justify-content:space-between; align-items:flex-start; gap:8px;}
+  .sg-card .sg-foot{display:flex; justify-content:space-between; align-items:center; margin-top:4px;}
+
+  .ach-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:1.75rem;}
+  .ach-card{
+    background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:1rem; text-align:center; position:relative;
+  }
+  .ach-card.locked{opacity:.4;}
+  .ach-card .ic{font-size:26px; margin-bottom:8px; color:var(--pink-deep);}
+  .ach-card .label{font-size:12.5px; font-weight:600;}
+  .stat-row{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:1.75rem;}
+  .stat-card{background:linear-gradient(135deg,var(--lav),#FFF1C2); border-radius:18px; padding:1rem 1.25rem; border:1px solid var(--line);}
+  .stat-card .num{font-family:'Fredoka',sans-serif; font-size:26px; font-weight:700; color:var(--lilac-deep);}
+  .stat-card .lbl{font-size:12.5px; color:var(--ink-soft); margin-top:2px;}
+
+  /* ===== Tambahan: modal, kelas, chat per kelas, kontrol edit ===== */
+  .modal-overlay{position:fixed; inset:0; background:rgba(123,92,196,0.35); display:flex; align-items:center; justify-content:center; z-index:1000; opacity:0; pointer-events:none; transition:opacity .15s;}
+  .modal-overlay.active{opacity:1; pointer-events:auto;}
+  .modal-box{background:var(--card); border-radius:22px; padding:1.5rem; width:380px; max-width:90vw; max-height:85vh; overflow:auto; box-shadow:0 20px 50px rgba(155,127,224,.3); border:1px solid var(--line); position:relative;}
+  .modal-box::before{content:'🎀'; position:absolute; top:-14px; left:-10px; font-size:22px; filter:drop-shadow(0 3px 4px rgba(155,127,224,0.3));}
+  .modal-box h3{font-size:17px; margin-bottom:1rem; color:var(--lilac-deep);}
+  .field{margin-bottom:12px;}
+  .field label{display:block; font-size:12.5px; color:var(--ink-soft); margin-bottom:5px; font-weight:600;}
+  .field input, .field select, .field textarea{width:100%; border:1.5px solid var(--line); border-radius:12px; padding:9px 11px; font-size:13.5px; font-family:'Quicksand',sans-serif; background:var(--cream); color:var(--ink);}
+  .field textarea{resize:vertical; min-height:60px; font-family:'Quicksand',sans-serif;}
+  .field input:focus, .field select:focus, .field textarea:focus{outline:2px solid var(--purple-deep); outline-offset:1px;}
+  .field-hint{font-size:11.5px; color:var(--ink-soft); margin-top:4px;}
+  .color-options{display:flex; gap:8px;}
+  .color-dot-pick{width:26px; height:26px; border-radius:50%; cursor:pointer; border:2px solid transparent;}
+  .color-dot-pick.selected{border-color:var(--lilac-deep);}
+  .modal-actions{display:flex; align-items:center; gap:8px; margin-top:1.25rem;}
+  .btn-danger{background:transparent; color:var(--pink-deep); border:1.5px solid var(--pink-deep); border-radius:12px; padding:8px 14px; font-size:13px; font-weight:600;}
+  .btn-danger:hover{background:#FBDCE9;}
+  .icon-btn-sm{width:26px; height:26px; border-radius:9px; border:1px solid var(--line); background:transparent; display:flex; align-items:center; justify-content:center; font-size:13px; color:var(--ink-soft); flex-shrink:0;}
+
+  /* ===== Video Call (WebRTC beneran) ===== */
+  .btn-call{background:linear-gradient(135deg,var(--mint-deep),var(--mint)); color:#fff; border:none; border-radius:12px; padding:8px 14px; font-size:12.5px; font-weight:700; display:inline-flex; align-items:center; gap:6px; cursor:pointer;}
+  .btn-call:hover{filter:brightness(1.05);}
+  .btn-call:disabled{opacity:.55; cursor:not-allowed;}
+  .call-overlay{position:fixed; inset:0; background:#14101f; z-index:2000; display:none; flex-direction:column;}
+  .call-overlay.active{display:flex;}
+  .call-topbar{display:flex; align-items:center; justify-content:space-between; padding:14px 18px; color:#fff;}
+  .call-topbar .call-title{font-weight:700; font-size:14.5px;}
+  .call-topbar .call-status{font-size:12px; color:#D9CBFA; margin-top:2px;}
+  .call-stage{flex:1; position:relative; overflow:hidden; margin:0 14px 14px; border-radius:18px; background:#1E1A2E;}
+  .call-remote-video{width:100%; height:100%; object-fit:cover; background:#1E1A2E;}
+  .call-remote-placeholder{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#C9BBEE; gap:10px; text-align:center; padding:20px;}
+  .call-remote-placeholder i{font-size:40px;}
+  .call-local-video{position:absolute; bottom:16px; right:16px; width:120px; height:160px; border-radius:14px; object-fit:cover; border:2px solid rgba(255,255,255,0.5); background:#0f0c18; box-shadow:0 8px 20px rgba(0,0,0,0.35);}
+  .call-controls{display:flex; align-items:center; justify-content:center; gap:14px; padding:0 0 26px;}
+  .call-ctrl-btn{width:52px; height:52px; border-radius:50%; border:none; background:rgba(255,255,255,0.14); color:#fff; font-size:19px; display:flex; align-items:center; justify-content:center; cursor:pointer;}
+  .call-ctrl-btn.off{background:#fff; color:#1E1A2E;}
+  .call-ctrl-btn.end{background:var(--pink-deep); width:60px; height:60px; font-size:22px;}
+  @media (max-width:600px){ .call-local-video{width:88px; height:118px;} }
+  .icon-btn-sm:hover{background:var(--lav); color:var(--lilac-deep);}
+  .row-actions{display:flex; gap:4px; flex-shrink:0;}
+  .toast-wrap{position:fixed; bottom:20px; right:20px; display:flex; flex-direction:column; gap:8px; z-index:1100;}
+  .toast{background:linear-gradient(135deg,var(--lilac-deep),var(--pink-deep)); color:white; padding:10px 16px; border-radius:14px; font-size:13px; font-weight:600; box-shadow:0 8px 20px rgba(155,127,224,.35); animation:toastin .2s ease;}
+  .toast::before{content:'✨ ';}
+  @keyframes toastin{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+
+  .class-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .class-card{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:1.1rem; position:relative;}
+  .class-card .ctop{display:flex; align-items:center; gap:10px; margin-bottom:6px;}
+  .class-card .cavatar{width:36px; height:36px; border-radius:13px; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:14px; flex-shrink:0;}
+  .class-card h3{font-size:14.5px; color:var(--ink);}
+  .class-card .dosen{font-size:12px; color:var(--ink-soft);}
+  .class-card .cactions{display:flex; flex-direction:column; gap:6px; margin-top:12px;}
+  .class-card .cactions .sub-actions{display:flex; gap:6px;}
+  .empty-box{color:var(--ink-soft); font-size:13px; padding:1.5rem; text-align:center; border:1.5px dashed var(--lilac); border-radius:16px; background:rgba(255,255,255,0.5);}
+  .empty-box::before{content:'( ˶ˆ ᗜ ˆ˵ ) '; opacity:.6;}
+
+  /* Tombol edit/hapus berlabel teks, biar jelas tanpa harus nebak ikon */
+  .btn-label-sm{display:flex; align-items:center; justify-content:center; gap:5px; border-radius:10px; padding:7px 9px; font-size:12px; font-weight:700; border:1.5px solid; white-space:nowrap; cursor:pointer; flex-shrink:0;}
+  .btn-label-sm.edit{border-color:var(--lilac-deep); color:var(--lilac-deep); background:var(--lav);}
+  .btn-label-sm.edit:hover{background:var(--lilac-deep); color:#fff;}
+  .btn-label-sm.delete{border-color:var(--pink-deep); color:var(--pink-deep); background:#FCE3EF;}
+  .btn-label-sm.delete:hover{background:var(--pink-deep); color:#fff;}
+  .row-actions-labeled{display:flex; gap:6px; flex-shrink:0;}
+
+  .chat-shell{display:flex; background:var(--card); border:1px solid var(--line); border-radius:20px; overflow:hidden; height:540px; box-shadow:var(--shadow-soft);}
+  .chat-sidebar{width:230px; flex-shrink:0; border-right:1px solid var(--line); display:flex; flex-direction:column; background:#FFFAF1;}
+  .chat-sidebar-head{display:flex; justify-content:space-between; align-items:center; padding:14px 14px 8px; font-size:12px; font-weight:700; color:var(--lilac-deep); text-transform:uppercase; letter-spacing:.04em;}
+  .chat-group-list{overflow-y:auto; flex:1; padding-bottom:8px;}
+  .chat-group-item{display:flex; gap:9px; align-items:center; padding:9px 14px; cursor:pointer; border-left:3px solid transparent;}
+  .chat-group-item:hover{background:var(--lav);}
+  .chat-group-item.active{background:var(--lav); border-left-color:var(--pink-deep);}
+  .chat-group-item .gavatar{width:32px; height:32px; border-radius:11px; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:12.5px; flex-shrink:0;}
+  .chat-group-item .ginfo{flex:1; min-width:0;}
+  .chat-group-item .ginfo .gname{font-size:12.5px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .chat-group-item .ginfo .glast{font-size:11px; color:var(--ink-soft); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .chat-main{flex:1; display:flex; flex-direction:column; min-width:0;}
+  .chat-header{display:flex; align-items:center; justify-content:space-between; padding:13px 18px; border-bottom:1px solid var(--line); min-height:24px;}
+  .chat-header h3{font-size:14.5px; color:var(--ink);}
+  .chat-header p{font-size:11.5px; color:var(--ink-soft); margin-top:2px;}
+  .chat-messages{flex:1; overflow-y:auto; padding:16px 18px; display:flex; flex-direction:column; gap:10px;}
+  .msg{max-width:68%; padding:9px 13px; border-radius:16px; font-size:13.5px; line-height:1.45;}
+  .msg .sender{font-size:11px; font-weight:700; margin-bottom:2px; color:var(--purple-deep);}
+  .msg.theirs{background:var(--lav); align-self:flex-start; border-bottom-left-radius:5px;}
+  .msg.mine{background:linear-gradient(135deg,var(--lilac-deep),var(--pink-deep)); color:white; align-self:flex-end; border-bottom-right-radius:5px;}
+  .msg.mine .sender{color:rgba(255,255,255,0.7);}
+  .msg .time{font-size:10px; opacity:.6; margin-top:4px; display:block;}
+  .chat-input-bar{display:flex; gap:8px; padding:12px 14px; border-top:1px solid var(--line);}
+  .chat-input-bar input{flex:1; border:1.5px solid var(--line); border-radius:22px; padding:10px 16px; font-size:13.5px; font-family:'Quicksand',sans-serif; background:var(--cream); color:var(--ink);}
+  .chat-input-bar input:focus{outline:2px solid var(--purple-deep); outline-offset:1px;}
+  .chat-send-btn{width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg,var(--lilac-deep),var(--pink-deep)); color:white; border:none; display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0;}
+  .chat-send-btn:hover{filter:brightness(1.08);}
+  .chat-send-btn:disabled{opacity:.4; cursor:not-allowed;}
+  .chat-empty{flex:1; display:flex; align-items:center; justify-content:center; color:var(--ink-soft); font-size:13px; flex-direction:column; gap:8px; text-align:center; padding:1.5rem;}
+
+  .slot-empty{border:1.5px dashed var(--lilac); border-radius:10px; display:flex; align-items:center; justify-content:center; color:var(--ink-soft); font-size:16px; cursor:pointer; min-height:40px;}
+  .slot-empty:hover{background:var(--lav); color:var(--purple-deep);}
+  .slot-card{position:relative; cursor:pointer;}
+
+  .save-indicator{
+    display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--ink-soft);
+    margin-top:4px;
+  }
+  .save-indicator i{font-size:13px; color:var(--mint-deep);}
+  .save-indicator.saving i{color:var(--pink-deep); animation:spin .8s linear infinite;}
+  @keyframes spin{from{transform:rotate(0deg);} to{transform:rotate(360deg);}}
+
+  /* ===== LOGIN SCREEN ===== */
+  .login-shell{
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:2rem;
+    background:
+      radial-gradient(circle at 12% 15%, rgba(252,231,145,0.65) 0%, transparent 40%),
+      radial-gradient(circle at 88% 80%, rgba(205,184,240,0.55) 0%, transparent 42%),
+      var(--cream);
+  }
+  .login-card{
+    background:var(--card); border:1px solid var(--line); border-radius:26px;
+    padding:2.25rem 2rem; width:380px; max-width:92vw;
+    box-shadow:0 20px 50px rgba(155,127,224,.22);
+    position:relative; text-align:center;
+  }
+  .login-card::before{content:'✦ 🎀 ✦'; position:absolute; top:-16px; left:50%; transform:translateX(-50%); font-size:14px; letter-spacing:4px;}
+  .login-mark{
+    width:54px; height:54px; border-radius:18px; margin:0 auto 12px;
+    background:linear-gradient(135deg,var(--yellow),var(--pink));
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fredoka',sans-serif; font-weight:700; font-size:24px; color:var(--lilac-deep);
+    box-shadow:0 6px 16px rgba(155,127,224,0.25); position:relative;
+  }
+  .login-card h1{font-size:24px; margin-bottom:6px;}
+  .login-sub{font-size:12.5px; color:var(--ink-soft); line-height:1.5; margin:0 0 1.25rem;}
+  .login-tabs{display:flex; gap:6px; background:var(--lav); border-radius:14px; padding:4px; margin-bottom:1.1rem;}
+  .login-tab{flex:1; background:transparent; border:none; border-radius:11px; padding:8px 0; font-size:13px; color:var(--ink-soft); font-weight:600;}
+  .login-tab.active{background:var(--card); color:var(--lilac-deep); box-shadow:0 3px 8px rgba(155,127,224,0.18);}
+  .login-card .field{text-align:left;}
+  .login-msg{font-size:12.5px; margin-top:10px; min-height:16px; color:var(--pink-deep); font-weight:600;}
+  .login-divider{display:flex; align-items:center; gap:10px; margin:1.1rem 0; font-size:11.5px; color:var(--ink-soft);}
+  .login-divider::before, .login-divider::after{content:''; flex:1; height:1px; background:var(--line);}
+  .login-setup-note{margin-top:14px; font-size:11.5px; color:var(--yellow-deep); background:#FFF1C2; border:1px dashed var(--yellow-deep); border-radius:12px; padding:10px 12px; text-align:left; line-height:1.5;}
+  .login-setup-note code{background:rgba(0,0,0,0.06); padding:1px 5px; border-radius:5px;}
+
+  @media (max-width: 900px){
+    .sidebar{display:none;}
+    .grid6, .lab-grid, .sg-grid, .ach-grid, .stat-row, .class-grid{grid-template-columns:repeat(2,1fr);}
+    .main{padding:1.5rem;}
+    .chat-shell{flex-direction:column; height:auto;}
+    .chat-sidebar{width:100%; border-right:none; border-bottom:1px solid var(--line); max-height:180px;}
+    .chat-messages{min-height:220px;}
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .msg-actions { display:none; position:absolute; top:4px; right:4px; gap:2px; }
+  .msg.mine .msg-actions { display:flex; } /* selalu tampil di pesan sendiri */
+  .msg-act-btn { background:rgba(0,0,0,0.18); border:none; border-radius:6px; width:24px; height:24px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:11px; color:#fff; padding:0; flex-shrink:0; }
+  .msg-act-btn:hover, .msg-act-btn:active { background:rgba(0,0,0,0.32); }
+  @media(max-width:700px){
+    #qrGrid { grid-template-columns:1fr !important; }
+  }
+</style>
+<!-- ===== Firebase SDK (Auth + Firestore) =====
+     Ganti isi firebaseConfig di bawah dengan config project Firebase milikmu sendiri.
+     Lihat panduan setup di komentar bagian script, atau tanya yang kasih file ini. -->
+<script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+<!-- ===== LOGIN SCREEN ===== -->
+<div class="login-shell" id="loginShell">
+  <div class="login-card">
+    <div class="login-mark">K<span class="bow-corner">🎀</span></div>
+    <h1>Kampusin</h1>
+    <p class="login-sub">Masuk buat akses tugas, jadwal, forum, dan study group kelasmu &mdash; tersimpan otomatis, bisa dibuka dari device manapun.</p>
+
+    <div class="login-tabs">
+      <button class="login-tab active" id="tabLogin" onclick="switchAuthTab('login')">Masuk</button>
+      <button class="login-tab" id="tabRegister" onclick="switchAuthTab('register')">Daftar</button>
+    </div>
+
+    <div class="field">
+      <label>Email</label>
+      <input id="authEmail" type="email" placeholder="namakamu@kampus.ac.id" autocomplete="email">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input id="authPassword" type="password" placeholder="Minimal 6 karakter" autocomplete="current-password">
+      <div style="text-align:right; margin-top:5px;" id="forgotPassWrap">
+        <a href="javascript:void(0)" onclick="resetPassword()" style="font-size:11.5px; color:var(--purple-deep); font-weight:600;">Lupa password?</a>
+      </div>
+    </div>
+    <div class="field" id="authNameField" style="display:none;">
+      <label>Nama tampilan</label>
+      <input id="authName" type="text" placeholder="cth. Suka Hati">
+    </div>
+
+    <button class="btn-primary" id="authSubmitBtn" style="width:100%; justify-content:center; padding:11px;" onclick="submitAuth()">Masuk</button>
+    <div class="login-msg" id="authMsg"></div>
+
+    <div class="login-divider"><span>atau</span></div>
+    <button class="btn-ghost" style="width:100%; justify-content:center; padding:10px;" onclick="loginAsGuest()">Coba tanpa daftar (mode tamu)</button>
+
+    <div class="login-setup-note" id="firebaseSetupNote" style="display:none;">
+      ⚠️ Firebase belum di-setup. Edit <code>firebaseConfig</code> di bagian bawah file ini dulu. Untuk sekarang kamu bisa coba pakai "mode tamu" (data tersimpan di browser ini saja).
+    </div>
+  </div>
+</div>
+
+<div class="app" id="appShell" style="display:none;">
+
+  <nav class="sidebar">
+    <div class="brand">
+      <div class="mark">K<span class="bow-corner">🎀</span></div>
+      <span>Kampusin</span>
+    </div>
+    <div class="navitem active" data-view="dashboard"><i class="ti ti-layout-grid"></i>Dashboard</div>
+
+    <div class="navlabel">Akademik</div>
+    <div class="navitem" data-view="kelas"><i class="ti ti-school"></i>Kelas saya</div>
+    <div class="navitem" data-view="lab"><i class="ti ti-flask"></i>Booking lab</div>
+    <div class="navitem" data-view="jadwal"><i class="ti ti-calendar"></i>Jadwal kuliah</div>
+    <div class="navitem" data-view="tugas"><i class="ti ti-checklist"></i>Tugas & deadline</div>
+    <div class="navitem" data-view="absensi"><i class="ti ti-clipboard-check"></i>Absensi</div>
+    <div class="navitem" data-view="nilai"><i class="ti ti-chart-bar"></i>Nilai & IPK</div>
+    <div class="navitem" data-view="krs"><i class="ti ti-file-text"></i>KRS & KHS</div>
+    <div class="navitem" data-view="materi"><i class="ti ti-book-2"></i>Materi perkuliahan</div>
+
+    <div class="navlabel">Komunitas</div>
+    <div class="navitem" data-view="forum"><i class="ti ti-message-circle"></i>Forum kelas</div>
+    <div class="navitem" data-view="studygroup"><i class="ti ti-users"></i>Study group</div>
+    <div class="navitem" data-view="achievement"><i class="ti ti-trophy"></i>Achievement</div>
+    <div class="navitem" data-view="ai"><i class="ti ti-sparkles"></i>Tanya AI</div>
+    <div class="navitem" data-view="studyplanner"><i class="ti ti-brain"></i>AI Study Planner</div>
+    <div class="navitem" data-view="zoom"><i class="ti ti-video"></i>Zoom / Meeting</div>
+    <div class="navitem" data-view="qrabsensi"><i class="ti ti-qrcode"></i>QR Absensi</div>
+
+    <div class="profile" onclick="openProfileModal()" style="cursor:pointer;">
+      <div class="avatar" id="profileAvatar">SH</div>
+      <div style="flex:1; min-width:0;">
+        <div class="name" id="profileName">Suka hati</div>
+        <div class="role" id="profileRole">Informatika &middot; UNIKI</div>
+      </div>
+    </div>
+
+    <div class="profile-actions">
+      <div class="profile-actions-label">📋 Pengaturan akun</div>
+      <button class="btn-profile-action" onclick="openProfileModal()" style="background:var(--lav); color:var(--purple-deep);"><i class="ti ti-user-edit"></i> Edit profil</button>
+      <button class="btn-profile-action reset" onclick="resetToDefault()"><i class="ti ti-refresh"></i> Reset semua data</button>
+      <button class="btn-profile-action logout" onclick="logoutUser()"><i class="ti ti-logout-2"></i> Keluar akun</button>
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <div class="view active" id="view-dashboard">
+      <div class="topbar">
+        <div>
+          <h1>Halo, Suka hati</h1>
+          <p>Semester genap 2026 &middot; minggu 14</p>
+          <div class="save-indicator" id="saveIndicator"><i class="ti ti-cloud-check"></i> <span id="saveIndicatorText">Tersimpan & sinkron otomatis</span></div>
+        </div>
+        <div style="position:relative;">
+          <button class="icon-btn-sm" style="width:42px; height:42px; position:relative;" onclick="toggleNotifPanel()" title="Notifikasi">
+            <i class="ti ti-bell"></i>
+            <span id="notifBadge" style="display:none; position:absolute; top:2px; right:2px; background:var(--pink-deep); color:#fff; font-size:10px; min-width:16px; height:16px; border-radius:8px; align-items:center; justify-content:center; padding:0 4px;">0</span>
+          </button>
+          <div id="notifPanel" style="display:none; position:absolute; right:0; top:48px; width:320px; max-height:380px; overflow-y:auto; background:var(--card); border-radius:14px; box-shadow:var(--shadow-soft); z-index:50; padding:10px;"></div>
+        </div>
+      </div>
+
+      <div class="streak-banner">
+        <div>
+          <h2 id="streakTitle">Streak belajar 6 hari</h2>
+          <p>Buka tugas atau check-in lab hari ini biar streak lanjut.</p>
+        </div>
+        <div class="ring" id="streakRing">6&#128293;</div>
+      </div>
+
+      <div class="grid6">
+        <div class="feature-card" data-view="kelas">
+          <div class="icowrap" style="background:var(--mint-deep);">🎓</div>
+          <h3>Kelas saya</h3>
+          <p>Kelola daftar mata kuliah yang kamu ikuti semester ini.</p>
+        </div>
+        <div class="feature-card" data-view="lab">
+          <div class="icowrap" style="background:var(--purple-deep);">🧪</div>
+          <h3>Booking lab</h3>
+          <p>Pesan slot lab komputer real-time, tanpa rebutan jadwal.</p>
+        </div>
+        <div class="feature-card" data-view="jadwal">
+          <div class="icowrap" style="background:var(--mint-deep);">🗓️</div>
+          <h3>Jadwal kuliah</h3>
+          <p>Susun jadwal mingguanmu, lihat dalam satu layar.</p>
+        </div>
+        <div class="feature-card" data-view="tugas">
+          <div class="icowrap" style="background:var(--yellow-deep);">✅</div>
+          <h3>Tugas & deadline</h3>
+          <p>Tracker tugas per mata kuliah, urut dari paling deket deadline.</p>
+        </div>
+        <div class="feature-card" data-view="forum">
+          <div class="icowrap" style="background:var(--pink-deep);">💬</div>
+          <h3>Forum kelas</h3>
+          <p>Diskusi per kelas, bentuknya kayak grup chat.</p>
+        </div>
+        <div class="feature-card" data-view="studygroup">
+          <div class="icowrap" style="background:var(--lilac-deep);">👥</div>
+          <h3>Study group finder</h3>
+          <p>Cari teman belajar satu mata kuliah, sesuai jadwal kosongmu.</p>
+        </div>
+        <div class="feature-card" data-view="achievement">
+          <div class="icowrap" style="background:#4FA877;">🏆</div>
+          <h3>Achievement & streak</h3>
+          <p>Kumpulin badge dan poin dari aktivitas belajar harianmu.</p>
+        </div>
+        <div class="feature-card" data-view="absensi">
+          <div class="icowrap" style="background:#4FA877;">📋</div>
+          <h3>Absensi</h3>
+          <p>Check-in kehadiran tiap kelas, rekap persentase hadir.</p>
+        </div>
+        <div class="feature-card" data-view="ai">
+          <div class="icowrap" style="background:var(--lilac-deep);">✨</div>
+          <h3>Tanya AI</h3>
+          <p>Tanya jawab belajar, bisa lampirin file jpg, pdf, atau Word.</p>
+        </div>
+        <div class="feature-card" data-view="nilai">
+          <div class="icowrap" style="background:var(--purple-deep);">📊</div>
+          <h3>Nilai & IPK</h3>
+          <p>Lihat nilai tugas, UTS, UAS, dan IPK berjalan tiap mata kuliah.</p>
+        </div>
+        <div class="feature-card" data-view="krs">
+          <div class="icowrap" style="background:#4FA877;">🧾</div>
+          <h3>KRS & KHS</h3>
+          <p>Isi KRS semester ini dan lihat KHS/transkrip secara online.</p>
+        </div>
+        <div class="feature-card" data-view="materi">
+          <div class="icowrap" style="background:var(--pink-deep);">📚</div>
+          <h3>Materi perkuliahan</h3>
+          <p>Akses PDF, PPT, atau link materi dari dosen kapan saja.</p>
+        </div>
+        <div class="feature-card" data-view="studyplanner">
+          <div class="icowrap" style="background:var(--purple-deep);">🧠</div>
+          <h3>AI Study Planner</h3>
+          <p>Buat jadwal belajar otomatis pakai AI berdasarkan tugas & deadline-mu.</p>
+        </div>
+        <div class="feature-card" data-view="zoom">
+          <div class="icowrap" style="background:#2D8CFF;">📹</div>
+          <h3>Zoom / Meeting</h3>
+          <p>Buat sesi meeting, join link Zoom, chat grup sebelum/sesudah kelas.</p>
+        </div>
+        <div class="feature-card" data-view="qrabsensi">
+          <div class="icowrap" style="background:var(--pink-deep);">📱</div>
+          <h3>QR Absensi</h3>
+          <p>Dosen generate QR, mahasiswa scan buat absen otomatis tanpa kertas.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="view" id="view-kelas">
+      <div class="page-head">
+        <div>
+          <h2>Kelas saya</h2>
+          <p class="sub">Tambah kelas di sini, otomatis muncul jadi pilihan di jadwal, tugas, dan forum.</p>
+        </div>
+        <button class="btn-primary" onclick="openClassModal()"><i class="ti ti-plus"></i>Tambah kelas</button>
+      </div>
+      <div class="class-grid" id="classGrid"></div>
+    </div>
+
+    <div class="view" id="view-lab">
+      <div class="page-head">
+        <h2>Booking lab</h2>
+        <button class="btn-primary" onclick="openLabModal()"><i class="ti ti-plus"></i>Booking slot</button>
+      </div>
+      <div class="lab-grid" id="labSummary"></div>
+      <div style="overflow-x:auto;">
+      <table class="slot-table">
+        <thead><tr><th>Waktu</th><th>Lab</th><th>Kapasitas</th><th>Persetujuan</th><th>Status</th><th>Aksi</th></tr></thead>
+        <tbody id="labTableBody"></tbody>
+      </table>
+      </div>
+    </div>
+
+    <div class="view" id="view-jadwal">
+      <div class="page-head">
+        <h2>Jadwal kuliah</h2>
+        <button class="btn-primary" onclick="openScheduleModal()"><i class="ti ti-plus"></i>Tambah jadwal</button>
+      </div>
+      <div class="week-grid" id="scheduleGrid"></div>
+    </div>
+
+    <div class="view" id="view-tugas">
+      <div class="page-head">
+        <h2>Tugas & deadline</h2>
+        <button class="btn-primary" onclick="openTaskModal()"><i class="ti ti-plus"></i>Tambah tugas</button>
+      </div>
+      <div id="taskList"></div>
+    </div>
+
+    <div class="view" id="view-absensi">
+      <div class="page-head">
+        <div>
+          <h2>Absensi</h2>
+          <p class="sub">Check-in tiap kelas hari ini, rekap persentase kehadiran per mata kuliah.</p>
+        </div>
+      </div>
+      <div class="class-grid" id="absensiGrid"></div>
+    </div>
+
+
+    <div class="view" id="view-nilai">
+      <div class="page-head">
+        <div>
+          <h2>Nilai & IPK</h2>
+          <p class="sub">Nilai tugas, UTS, UAS tiap mata kuliah, dan IPK berjalan semester ini.</p>
+        </div>
+      </div>
+      <div class="streak-banner" style="margin-bottom:16px;">
+        <div>
+          <h2 id="ipkTitle">IPK semester ini: 0.00</h2>
+          <p id="ipkSub">Belum ada nilai yang diisi.</p>
+        </div>
+        <div class="ring" id="ipkRing">0.0</div>
+      </div>
+      <div id="gradesGrid" class="class-grid"></div>
+    </div>
+
+    <div class="view" id="view-krs">
+      <div class="page-head">
+        <div>
+          <h2>KRS & KHS Online</h2>
+          <p class="sub">Pilih mata kuliah buat KRS semester ini, lalu lihat ringkasan KHS/transkrip di bawah.</p>
+        </div>
+      </div>
+      <h3 style="margin:0 0 10px;">Isi KRS</h3>
+      <div id="krsList" style="margin-bottom:22px;"></div>
+      <h3 style="margin:0 0 10px;">KHS / Transkrip semester ini</h3>
+      <div style="overflow-x:auto;">
+        <table class="data-table">
+          <thead><tr><th>Mata kuliah</th><th>SKS</th><th>Nilai akhir</th><th>Huruf</th></tr></thead>
+          <tbody id="khsBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="view" id="view-materi">
+      <div class="page-head">
+        <div>
+          <h2>Materi perkuliahan</h2>
+          <p class="sub">Upload &amp; akses materi (PDF, PPT, gambar, atau link) per mata kuliah.</p>
+        </div>
+      </div>
+      <div class="field" style="max-width:340px; margin-bottom:16px;">
+        <label>Pilih mata kuliah</label>
+        <select id="materiClassSelect" onchange="renderMateri()"></select>
+      </div>
+      <input type="file" id="materiFileInput" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.ppt,.pptx" style="display:none;" onchange="handleMateriFileSelect(this)">
+      <button class="btn-primary" style="margin-bottom:16px;" onclick="document.getElementById('materiFileInput').click()"><i class="ti ti-upload"></i> Upload materi</button>
+      <div id="materiList"></div>
+    </div>
+
+
+    <div class="view" id="view-forum">
+      <div class="page-head">
+        <div>
+          <h2>Forum kelas</h2>
+          <p class="sub">Tiap kelas punya ruang diskusi sendiri, kayak grup chat.</p>
+        </div>
+      </div>
+      <div class="chat-shell">
+        <div class="chat-sidebar">
+          <div class="chat-sidebar-head">
+            <span>Grup kelas</span>
+            <button class="icon-btn-sm" onclick="openClassModal()" title="Tambah kelas"><i class="ti ti-plus"></i></button>
+          </div>
+          <div class="chat-group-list" id="classGroupList"></div>
+        </div>
+        <div class="chat-main">
+          <div class="chat-header" id="chatHeader"></div>
+          <div class="chat-messages" id="chatMessages"></div>
+          <div class="chat-input-bar">
+            <input type="file" id="chatFileInput" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" style="display:none;" onchange="handleChatFileSelect(this)">
+            <button class="icon-btn-sm" onclick="document.getElementById('chatFileInput').click()" title="Lampirkan file"><i class="ti ti-paperclip"></i></button>
+            <input type="text" id="chatInput" placeholder="Tulis pesan ke kelas ini..." autocomplete="off">
+            <button class="chat-send-btn" id="chatSendBtn" onclick="sendMessage()"><i class="ti ti-send"></i></button>
+          </div>
+          <div id="chatFilePreview" style="display:none; padding:6px 14px; font-size:12px; color:var(--ink-soft);"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="view" id="view-studygroup">
+      <div class="page-head">
+        <h2>Study group finder</h2>
+        <button class="btn-primary" onclick="openStudyGroupModal()"><i class="ti ti-plus"></i>Buat grup</button>
+      </div>
+      <div class="sg-grid" id="sgGrid"></div>
+    </div>
+
+    <div class="view" id="view-achievement">
+      <div class="page-head">
+        <h2>Achievement & streak</h2>
+      </div>
+      <div class="stat-row">
+        <div class="stat-card"><div class="num" id="statStreak">6</div><div class="lbl">Hari streak belajar</div></div>
+        <div class="stat-card"><div class="num" id="statPoin">1.240</div><div class="lbl">Total poin</div></div>
+        <div class="stat-card"><div class="num" id="statBadge">9</div><div class="lbl">Badge terkumpul</div></div>
+      </div>
+      <div class="ach-grid">
+        <div class="ach-card locked" id="achStreak5"><div class="ic"><i class="ti ti-flame"></i></div><div class="label">Streak 5 hari</div></div>
+        <div class="ach-card locked" id="achTask10"><div class="ic"><i class="ti ti-checklist"></i></div><div class="label">10 tugas selesai</div></div>
+        <div class="ach-card locked" id="achLabExplorer"><div class="ic"><i class="ti ti-flask"></i></div><div class="label">Lab explorer</div></div>
+        <div class="ach-card locked" id="achTeamPlayer"><div class="ic"><i class="ti ti-users"></i></div><div class="label">Team player</div></div>
+      </div>
+    </div>
+
+    <div class="view" id="view-ai">
+      <div class="page-head">
+        <div>
+          <h2>Tanya AI</h2>
+          <p class="sub">Wadah belajar: tanya jawab seputar materi kuliah, bisa lampirin file jpg, pdf, atau Word.</p>
+        </div>
+        <button class="btn-ghost" onclick="openAiSettingsModal()"><i class="ti ti-key"></i> Atur API key</button>
+      </div>
+      <div class="ai-status" id="aiStatusBanner" style="display:none; font-size:12.5px; padding:8px 12px; border-radius:10px; background:var(--lav); color:var(--lilac-deep); margin-bottom:10px;"></div>
+      <div class="chat-shell" style="height:65vh;">
+        <div class="chat-main" style="width:100%;">
+          <div class="chat-messages" id="aiMessages"></div>
+          <div class="chat-input-bar">
+            <input type="file" id="aiFileInput" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" style="display:none;" onchange="handleAiFileSelect(this)">
+            <button class="icon-btn-sm" onclick="document.getElementById('aiFileInput').click()" title="Lampirkan file"><i class="ti ti-paperclip"></i></button>
+            <input type="text" id="aiInput" placeholder="Tanya sesuatu, atau lampirkan file dulu..." autocomplete="off">
+            <button class="chat-send-btn" id="aiSendBtn" onclick="sendAiMessage()"><i class="ti ti-send"></i></button>
+          </div>
+          <div id="aiFilePreview" style="display:none; padding:6px 14px; font-size:12px; color:var(--ink-soft);"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== AI STUDY PLANNER ===== -->
+    <div class="view" id="view-studyplanner">
+      <div class="page-head">
+        <div>
+          <h2>AI Study Planner</h2>
+          <p class="sub">Buat jadwal belajar otomatis berdasarkan tugas & deadline yang ada di app ini.</p>
+        </div>
+        <button class="btn-primary" onclick="generateStudyPlan()"><i class="ti ti-wand"></i> Generate rencana</button>
+      </div>
+      <div class="ai-status" id="plannerStatusBanner" style="display:none; font-size:12.5px; padding:8px 12px; border-radius:10px; background:var(--lav); color:var(--lilac-deep); margin-bottom:10px;"></div>
+      <div id="studyPlanOutput" style="min-height:200px;"></div>
+    </div>
+
+    <!-- ===== CHAT DOSEN ===== -->
+    <!-- ===== ZOOM / MEETING ===== -->
+    <div class="view" id="view-zoom">
+      <div class="page-head">
+        <div>
+          <h2>Zoom / Meeting</h2>
+          <p class="sub">Buat sesi meeting kelas, chat grup sebelum/sesudah meeting, dan akses link Zoom langsung.</p>
+        </div>
+        <button class="btn-primary" onclick="openZoomSessionModal()"><i class="ti ti-plus"></i> Buat meeting</button>
+      </div>
+      <div class="chat-shell">
+        <div class="chat-sidebar">
+          <div class="chat-sidebar-label">Sesi meeting</div>
+          <div id="zoomSessionList"></div>
+        </div>
+        <div class="chat-main">
+          <div id="zoomChatHeader" style="padding:12px 16px; border-bottom:1px solid var(--lav); display:none; align-items:center; justify-content:space-between; gap:10px;">
+            <div>
+              <div id="zoomChatTitle" style="font-weight:700;"></div>
+              <div id="zoomChatMeta" style="font-size:12px; color:var(--ink-soft); margin-top:2px;"></div>
+            </div>
+            <button class="btn-call" id="zoomCallBtn" onclick="startVideoCall()"><i class="ti ti-device-camera-video"></i> Video Call</button>
+          </div>
+          <div class="chat-messages" id="zoomMessages">
+            <div class="chat-empty"><i class="ti ti-video" style="font-size:26px;"></i><div>Buat meeting baru atau pilih sesi di kiri.</div></div>
+          </div>
+          <div class="chat-input-bar" id="zoomInputBar" style="display:none;">
+            <input type="file" id="zoomFileInput" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" style="display:none;" onchange="handleZoomFileSelect(this)">
+            <button class="icon-btn-sm" onclick="document.getElementById('zoomFileInput').click()"><i class="ti ti-paperclip"></i></button>
+            <input type="text" id="zoomInput" placeholder="Chat meeting..." autocomplete="off">
+            <button class="chat-send-btn" onclick="sendZoomMessage()"><i class="ti ti-send"></i></button>
+          </div>
+          <div id="zoomFilePreview" style="display:none; padding:6px 14px; font-size:12px; color:var(--ink-soft);"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== QR ABSENSI ===== -->
+    <div class="view" id="view-qrabsensi">
+      <div class="page-head">
+        <div>
+          <h2>QR Absensi</h2>
+          <p class="sub">Dosen generate kode sesi, mahasiswa masukkan kode 6-digit buat absen otomatis.</p>
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;" id="qrGrid">
+        <div class="class-card">
+          <h3>🎓 Mode Dosen — Buat Sesi Absen</h3>
+          <p class="sub" style="margin-bottom:12px;">Pilih mata kuliah, generate kode 6-digit, dan tunjukkan ke mahasiswa.</p>
+          <div class="field">
+            <label>Mata kuliah</label>
+            <select id="qrClassSelect"></select>
+          </div>
+          <button class="btn-primary" style="width:100%; justify-content:center; margin-bottom:14px;" onclick="generateQrSession()">
+            <i class="ti ti-key"></i> Generate kode sesi
+          </button>
+          <div id="qrOutput" style="text-align:center; min-height:60px;"></div>
+        </div>
+        <div class="class-card">
+          <h3>📱 Mode Mahasiswa — Masukkan Kode</h3>
+          <p class="sub" style="margin-bottom:12px;">Masukkan kode 6-digit yang ditampilkan dosen di depan kelas.</p>
+          <div class="field">
+            <label>Kode sesi (6 digit)</label>
+            <input id="qrCodeInput" maxlength="6" placeholder="123456" inputmode="numeric"
+              style="font-size:28px; font-weight:900; letter-spacing:8px; text-align:center; font-family:monospace;">
+          </div>
+          <button class="btn-primary" style="width:100%; justify-content:center;" onclick="submitQrCode()">
+            <i class="ti ti-circle-check"></i> Absen sekarang
+          </button>
+          <div id="qrScanResult"></div>
+        </div>
+      </div>
+      <div style="margin-top:18px;" id="qrSessionList"></div>
+    </div>
+
+  </main>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <h3 id="modalTitle"></h3>
+    <div id="modalBody"></div>
+    <div class="modal-actions">
+      <button class="btn-danger" id="modalDeleteBtn" style="display:none;">Hapus</button>
+      <div style="flex:1;"></div>
+      <button class="btn-ghost" onclick="closeModal()">Batal</button>
+      <button class="btn-primary" id="modalSaveBtn">Simpan</button>
+    </div>
+  </div>
+</div>
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- ===== VIDEO CALL OVERLAY (WebRTC beneran, kamera & mic asli) ===== -->
+<div class="call-overlay" id="callOverlay">
+  <div class="call-topbar">
+    <div>
+      <div class="call-title" id="callTitle">Video Call</div>
+      <div class="call-status" id="callStatus">Menghubungkan...</div>
+    </div>
+  </div>
+  <div class="call-stage">
+    <video class="call-remote-video" id="callRemoteVideo" autoplay playsinline></video>
+    <div class="call-remote-placeholder" id="callRemotePlaceholder">
+      <i class="ti ti-user-circle"></i>
+      <div>Menunggu peserta lain gabung ke meeting ini...<br>Bagikan sesi ini biar temanmu bisa ikut join.</div>
+    </div>
+    <video class="call-local-video" id="callLocalVideo" autoplay playsinline muted></video>
+  </div>
+  <div class="call-controls">
+    <button class="call-ctrl-btn" id="callMicBtn" onclick="toggleCallMic()" title="Mute/unmute mic"><i class="ti ti-microphone" id="callMicIcon"></i></button>
+    <button class="call-ctrl-btn end" onclick="endVideoCall()" title="Akhiri panggilan"><i class="ti ti-phone-x"></i></button>
+    <button class="call-ctrl-btn" id="callCamBtn" onclick="toggleCallCam()" title="Matikan/nyalakan kamera"><i class="ti ti-camera" id="callCamIcon"></i></button>
+  </div>
+</div>
+
+<script>
+/* ========================== STATE ========================== */
+var STORAGE_KEY = 'kampusin:state';
+var defaultState = {
+  classes: [
+    {id:'c1', name:'Analisis Perangkat Lunak', dosen:'Bu Cut Amalia Saffiera, M.Sc', color:'purple', sks:3},
+    {id:'c2', name:'Database', dosen:'Bu Nisa Ulkamila', color:'pink', sks:3},
+    {id:'c3', name:'Pengembangan GIS', dosen:'Bapak Radiansyah', color:'mint', sks:3},
+    {id:'c4', name:'Pemrograman web', dosen:'Bu Zhiaun Najwa', color:'purple', sks:3},
+    {id:'c5', name:'Statistika', dosen:'Bu Sarah Nadia', color:'pink', sks:2},
+    {id:'c6', name:'Metopen', dosen:'Bu Faika Fadhlia', color:'mint', sks:2},
+    {id:'c7', name:'Multimedia', dosen:'Bu Ainil Ariesya', color:'purple', sks:3}
+  ],
+  labs: ['Lab 1','Lab 2','Lab Robotika','Lab Multimedia'],
+  labBookings: [
+    {id:'lb1', time:'08.00 - 10.00', lab:'Lab Robotika', cap:20, bookedBy:['dummy1','dummy2','dummy3','dummy4','dummy5','dummy6','dummy7','dummy8','dummy9','dummy10','dummy11','dummy12','dummy13','dummy14','dummy15','dummy16','dummy17','dummy18'], status:'approved'},
+    {id:'lb2', time:'10.00 - 12.00', lab:'Lab 1', cap:20, bookedBy:['d1','d2','d3','d4','d5','d6','d7','d8','d9','d10','d11','d12','d13','d14','d15','d16','d17','d18','d19','d20'], status:'approved'},
+    {id:'lb3', time:'13.00 - 15.00', lab:'Lab 2', cap:20, bookedBy:['e1','e2','e3','e4','e5','e6','e7','e8','e9','e10','e11','e12'], status:'pending'},
+    {id:'lb4', time:'15.00 - 17.00', lab:'Lab Multimedia', cap:10, bookedBy:['f1','f2','f3','f4','f5','f6','f7','f8','f9'], status:'approved'}
+  ],
+  scheduleTimes: ['08.00','10.00','13.00'],
+  scheduleDays: ['Senin','Selasa','Kamis','Jumat'],
+  schedule: [
+    {id:'s3', day:'Senin', time:'08.00', classId:'c3', room:'Lab Robotika'},
+    {id:'s3', day:'Jumat', time:'08.00', classId:'c3', room:'Lab Robotika'},
+    {id:'s4', day:'Selasa', time:'10.00', classId:'c4', room:'Lab 1'},
+    {id:'s5', day:'Kamis', time:'10.00', classId:'c5', room:'Lab 1'},
+    {id:'s7', day:'Jumat', time:'15.00', classId:'c6', room:'Lab Multimedia'}
+  ],
+  tasks: [
+    {id:'t1', title:'Membuat dan Mendesain Website UI/UX', classId:'c3', deadline:addDays(1), done:false, submission:null},
+    {id:'t2', title:'Tugas normalisasi basis data', classId:'c1', deadline:addDays(3), done:false, submission:null},
+    {id:'t3', title:'Quiz statistika bab 5', classId:'c5', deadline:addDays(5), done:false, submission:null},
+    {id:'t4', title:'Resume materi struktur data', classId:'c2', deadline:addDays(-2), done:true, submission:null}
+  ],
+  chats: {
+    c1: [
+      {sender:'Nisa', text:'Bingung bedain antara 2NF sama 3NF nih, ada contoh kasus simpel?', time:'10:12', mine:false},
+      {sender:'Zhia', text:'2NF udah gak ada partial dependency, 3NF nambahin syarat gak ada transitive dependency.', time:'10:15', mine:false}
+    ],
+    c2: [],
+    c3: [
+      {sender:'Sarah', text:'Share slide praktikum minggu lalu dong, kemarin absen karena sakit.', time:'14:02', mine:false},
+      {sender:'Ghea', text:'Otw aku upload ya di sini', time:'14:05', mine:false}
+    ],
+    c4: [
+      {sender:'Zhafran', text:'Ada rekomendasi referensi belajar Pyhton yang enak diikutin buat tugas akhir?', time:'09:30', mine:false}
+    ],
+    c5: [], c6: [], c7: []
+  },
+  studyGroups: [
+    {id:'g1', title:'Belajar bareng basis data', desc:'Persiapan UAS, fokus normalisasi dan query.', tags:['Basis data','Rabu malam'], members:['A','D','R'], joined:false},
+    {id:'g2', title:'Membuat Laporan Test Case ', desc:'Sofware Testing.', tags:['Analisis Perangkat Lunak','Sabtu siang'], members:['M','F'], joined:false},
+    {id:'g3', title:'Web dev project partner', desc:'Cari 1-2 orang buat ngerjain tugas web bareng.', tags:['Pemrograman web','Fleksibel'], members:['S'], joined:false}
+  ],
+  basePoin: 1240,
+  baseDoneCount: 1,
+  streak: 6,
+  lastStreakDate: addDays(-1),
+  activeChatClass: 'c1',
+  attendance: {},
+  aiChats: {},
+  notifiedTaskIds: [],
+  notifications: [
+    {id:'n1', title:'Selamat datang di Kampusin!', body:'Eksplor semua fitur belajar di sini ya 🎉', time:'Baru saja', read:true, type:'info'}
+  ],
+  materials: {},
+  grades: {},
+  krsSelected: ['c1','c2','c3','c4','c5','c6','c7'],
+  profile: {
+    photo:'', bio:'', prodi:'Sistem Informasi', semester:4, phone:'', notifEnabled:true
+  },
+  qrSessions: {}
+};
+var state = JSON.parse(JSON.stringify(defaultState));
+
+var currentModalSave = null;
+var currentModalDelete = null;
+var saveTimer = null;
+
+/* ========================== HELPERS ========================== */
+function addDays(n){
+  var d = new Date();
+  d.setDate(d.getDate() + n);
+  return d.toISOString().slice(0,10);
+}
+function stripTime(d){ return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+function uid(prefix){ return prefix + Date.now().toString(36) + Math.floor(Math.random()*1000); }
+function esc(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+function getClass(id){ return state.classes.filter(function(c){ return c.id === id; })[0] || null; }
+function className(id){ var c = getClass(id); return c ? c.name : 'Tanpa kelas'; }
+function colorDeep(color){
+  if(color === 'pink') return 'var(--pink-deep)';
+  if(color === 'mint') return 'var(--mint-deep)';
+  return 'var(--purple-deep)';
+}
+function initials(name){
+  var parts = name.trim().split(/\s+/);
+  var s = parts[0] ? parts[0][0] : '?';
+  if(parts[1]) s += parts[1][0];
+  return s.toUpperCase();
+}
+function nowTime(){
+  var d = new Date();
+  return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+}
+function toast(msg){
+  var wrap = document.getElementById('toastWrap');
+  var el = document.createElement('div');
+  el.className = 'toast';
+  el.textContent = msg;
+  wrap.appendChild(el);
+  setTimeout(function(){ el.remove(); }, 2200);
+}
+function setSaveIndicator(status){
+  var el = document.getElementById('saveIndicator');
+  var txt = document.getElementById('saveIndicatorText');
+  if(!el || !txt) return;
+  var icon = el.querySelector('i');
+  el.classList.remove('saving');
+  if(status === 'saving'){
+    el.classList.add('saving');
+    if(icon) icon.className = 'ti ti-loader-2';
+    txt.textContent = 'Menyimpan...';
+  } else if(status === 'error'){
+    if(icon) icon.className = 'ti ti-cloud-off';
+    txt.textContent = 'Gagal sinkron, cek koneksi internet';
+  } else {
+    if(icon) icon.className = 'ti ti-cloud-check';
+    txt.textContent = 'Tersimpan & sinkron otomatis';
+  }
+}
+
+/* ========================== FIREBASE SETUP ==========================
+   1. Buka https://console.firebase.google.com -> bikin project baru (gratis).
+   2. Di project, klik "Build" -> "Authentication" -> "Get started" -> aktifkan
+      sign-in method "Email/Password".
+   3. Klik "Build" -> "Firestore Database" -> "Create database" -> pilih mode
+      "production" atau "test" (test lebih gampang buat awal belajar) -> pilih lokasi asia.
+   4. Klik ikon gear (Project settings) -> scroll ke "Your apps" -> klik ikon web "</>"
+      -> daftarkan app -> Firebase akan kasih object firebaseConfig seperti di bawah.
+   5. GANTI nilai di bawah ini dengan punyamu sendiri, lalu simpan file ini.
+   Field SHARED_FIELDS akan kelihatan sama untuk SEMUA orang yang login.
+   Field PERSONAL_FIELDS hanya kelihatan oleh masing-masing akun sendiri.
+*/
+var firebaseConfig = {
+  apiKey: "AIzaSyA4xeQpDXJrNu0BvYV58BFQDNp7AOuQzag",
+  authDomain: "kampusin-by-gen-z.firebaseapp.com",
+  projectId: "kampusin-by-gen-z",
+  storageBucket: "kampusin-by-gen-z.firebasestorage.app",
+  messagingSenderId: "689713427817",
+  appId: "1:689713427817:web:d54447c187183ccf0ef9f8"
+};
+
+/* Variabel global Firebase & sesi. Semua dimulai "kosong" lalu diisi oleh initFirebase(). */
+var fbApp = null;
+var fbAuth = null;
+var fbDb = null;
+var firebaseReady = false;
+var currentUser = null;
+var isGuestMode = false;
+var unsubShared = null;
+var unsubPersonal = null;
+var lastKnownShared = {}; /* snapshot field shared terakhir yang kita tahu dari server, dipakai persistState() untuk deteksi konflik */
+
+/* classes/lab/jadwal/forum/study group = data BERSAMA, sama untuk semua orang yang login.
+   tasks/poin/streak = data PRIBADI, beda untuk tiap akun. */
+var SHARED_DOC = 'shared/kampusin_main';
+var SHARED_FIELDS = ['classes','labs','labBookings','scheduleTimes','scheduleDays','schedule','chats','studyGroups','materials','notifications','qrSessions','zoomSessions'];
+var PERSONAL_FIELDS = ['tasks','basePoin','baseDoneCount','streak','lastStreakDate','activeChatClass','attendance','aiChats','notifiedTaskIds','grades','krsSelected','profile'];
+
+function initFirebase(){
+  try{
+    if(typeof firebase === 'undefined'){
+      // SDK Firebase gagal dimuat - tunjukkan pesan error saja, no debug log
+      firebaseReady = false;
+      var note0 = document.getElementById('firebaseSetupNote');
+      if(note0) note0.style.display = 'block';
+      return false;
+    }
+    fbApp = firebase.initializeApp(firebaseConfig);
+    fbAuth = firebase.auth();
+    fbDb = firebase.firestore();
+    firebaseReady = true;
+    var note = document.getElementById('firebaseSetupNote');
+    if(note) note.style.display = 'none';
+    return true;
+  } catch(err){
+    console.error('Gagal inisialisasi Firebase', err);
+    firebaseReady = false;
+    var note2 = document.getElementById('firebaseSetupNote');
+    if(note2) note2.style.display = 'block';
+    return false;
+  }
+}
+
+/* ========================== AUTH UI ========================== */
+function switchAuthTab(mode){
+  document.getElementById('tabLogin').classList.toggle('active', mode === 'login');
+  document.getElementById('tabRegister').classList.toggle('active', mode === 'register');
+  document.getElementById('authNameField').style.display = mode === 'register' ? 'block' : 'none';
+  document.getElementById('forgotPassWrap').style.display = mode === 'register' ? 'none' : 'block';
+  document.getElementById('authSubmitBtn').textContent = mode === 'register' ? 'Daftar' : 'Masuk';
+  document.getElementById('authSubmitBtn').setAttribute('data-mode', mode);
+  document.getElementById('authMsg').textContent = '';
+}
+document.addEventListener('DOMContentLoaded', function(){
+  var btn = document.getElementById('authSubmitBtn');
+  if(btn) btn.setAttribute('data-mode', 'login');
+  ['authEmail','authPassword','authName'].forEach(function(id){
+    var input = document.getElementById(id);
+    if(input) input.addEventListener('keydown', function(e){
+      if(e.key === 'Enter'){ e.preventDefault(); submitAuth(); }
+    });
+  });
+});
+function authMsg(text){ document.getElementById('authMsg').textContent = text; }
+function debugLog(text){
+  // Debug log disabled untuk production (uncomment di console.log jika perlu troubleshoot)
+  // console.log('[DEBUG]', text);
+}
+function submitAuth(){
+  if(!firebaseReady){ authMsg('Firebase belum di-setup, pakai mode tamu dulu ya.'); return; }
+  var mode = document.getElementById('authSubmitBtn').getAttribute('data-mode') || 'login';
+  var email = document.getElementById('authEmail').value.trim();
+  var password = document.getElementById('authPassword').value;
+  var name = document.getElementById('authName').value.trim();
+  if(!email || !password){ authMsg('Email dan password wajib diisi'); return; }
+  if(password.length < 6){ authMsg('Password minimal 6 karakter'); return; }
+  authMsg('Memproses...');
+  // Proses auth (Firebase)
+  var finished = false;
+  var timeoutId = setTimeout(function(){
+    if(finished) return;
+    finished = true;
+    authMsg('Koneksi ke server Firebase terlalu lama / tidak merespon. Cek koneksi internet atau coba jaringan lain (matikan VPN/WiFi kampus yang mungkin blokir, coba data seluler).');
+  }, 15000);
+
+  function onOk(label){
+    if(finished) return;
+    finished = true;
+    clearTimeout(timeoutId);
+  }
+  function onFail(err){
+    if(finished) return;
+    finished = true;
+    clearTimeout(timeoutId);
+    authMsg(friendlyAuthError(err));
+  }
+
+  if(mode === 'register'){
+    fbAuth.createUserWithEmailAndPassword(email, password).then(function(cred){
+      return cred.user.updateProfile({displayName: name || email.split('@')[0]}).then(function(){
+        onOk('Register + profile updated');
+      });
+    }).catch(onFail);
+  } else {
+    fbAuth.signInWithEmailAndPassword(email, password).then(function(){
+      onOk('Login berhasil');
+    }).catch(onFail);
+  }
+}
+function friendlyAuthError(err){
+  var code = err && err.code || '';
+  if(code === 'auth/email-already-in-use') return 'Email ini sudah terdaftar. Klik tab "Masuk" lalu login pakai password kamu.';
+  if(code === 'auth/invalid-email') return 'Format email tidak valid.';
+  if(code === 'auth/weak-password') return 'Password terlalu lemah, minimal 6 karakter.';
+  if(code === 'auth/missing-password') return 'Password wajib diisi.';
+  if(code === 'auth/user-not-found') return 'Belum ada akun dengan email ini. Klik tab "Daftar" untuk membuat akun baru.';
+  if(code === 'auth/wrong-password') return 'Password salah, coba lagi atau klik "Lupa password?".';
+  if(code === 'auth/invalid-credential') return 'Email atau password salah, atau akun belum terdaftar. Cek lagi atau klik tab "Daftar".';
+  if(code === 'auth/too-many-requests') return 'Terlalu banyak percobaan gagal. Tunggu sebentar lalu coba lagi.';
+  if(code === 'auth/network-request-failed') return 'Koneksi internet bermasalah, coba lagi.';
+  return 'Gagal: ' + (err && err.message ? err.message : 'terjadi kesalahan');
+}
+function resetPassword(){
+  var email = document.getElementById('authEmail').value.trim();
+  if(!firebaseReady){ authMsg('Firebase belum siap, coba lagi sebentar.'); return; }
+  if(!email){ authMsg('Isi dulu email kamu di kolom email, lalu klik "Lupa password?" lagi.'); return; }
+  authMsg('Mengirim email reset password...');
+  fbAuth.sendPasswordResetEmail(email).then(function(){
+    authMsg('Link reset password sudah dikirim ke ' + email + ', cek inbox/spam ya.');
+  }).catch(function(err){
+    authMsg(friendlyAuthError(err));
+  });
+}
+function logoutUser(){
+  if(isGuestMode){
+    isGuestMode = false;
+    showLoginScreen();
+    return;
+  }
+  if(fbAuth) fbAuth.signOut();
+}
+function loginAsGuest(){
+  isGuestMode = true;
+  currentUser = null;
+  state = JSON.parse(JSON.stringify(defaultState));
+  loadGuestState();
+  enterApp({displayName:'Tamu', email:'mode tamu (belum login)'});
+  renderAll();
+  setSaveIndicator('saved');
+  toast('Mode tamu: data cuma tersimpan di browser ini');
+}
+
+/* ========================== STATE SYNC (Firestore) ==========================
+   classes/jadwal/lab/forum/study group disimpan di 1 dokumen bersama (SHARED_DOC)
+   yang otomatis sinkron real-time ke semua orang yang login.
+   tasks & poin disimpan per-user di users/{uid}, hanya kelihatan oleh diri sendiri.
+*/
+function splitState(){
+  var shared = {}, personal = {};
+  SHARED_FIELDS.forEach(function(k){ shared[k] = state[k]; });
+  PERSONAL_FIELDS.forEach(function(k){ personal[k] = state[k]; });
+  return {shared:shared, personal:personal};
+}
+function mergeIntoState(shared, personal){
+  if(shared) SHARED_FIELDS.forEach(function(k){ if(shared[k] !== undefined) state[k] = shared[k]; });
+  if(personal) PERSONAL_FIELDS.forEach(function(k){ if(personal[k] !== undefined) state[k] = personal[k]; });
+  migrateState();
+}
+function persistState(){
+  clearTimeout(saveTimer);
+  setSaveIndicator('saving');
+  saveTimer = setTimeout(function(){
+    if(isGuestMode){
+      try{
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        setSaveIndicator('saved');
+      } catch(err){ setSaveIndicator('error'); }
+      return;
+    }
+    if(!firebaseReady || !currentUser){ setSaveIndicator('error'); return; }
+    var parts = splitState();
+    /* Shared doc pakai transaction: baca versi terbaru dari server dulu,
+       lalu tulis snapshot shared milik kita di atasnya. Ini tidak menghilangkan
+       semua risiko konflik (2 edit field yang sama tetap last-write-wins),
+       tapi mencegah kasus paling umum: data shared yang sudah berubah di
+       server (oleh user lain) sejak kita terakhir narik snapshot, ketimpa
+       balik oleh state lokal kita yang sudah basi. */
+    var p1 = fbDb.runTransaction(function(tx){
+      return tx.get(fbDb.doc(SHARED_DOC)).then(function(snap){
+        var serverShared = snap.exists ? snap.data() : {};
+        var myShared = parts.shared;
+        var merged = {};
+        SHARED_FIELDS.forEach(function(k){
+          /* Kalau field ini tidak kita ubah sejak load terakhir (sama dengan
+             lastKnownShared), pakai versi server (hormati perubahan user lain).
+             Kalau kita ubah, pakai versi kita. */
+          var weChanged = JSON.stringify(myShared[k]) !== JSON.stringify(lastKnownShared[k]);
+          merged[k] = weChanged ? myShared[k] : (serverShared[k] !== undefined ? serverShared[k] : myShared[k]);
+        });
+        tx.set(fbDb.doc(SHARED_DOC), merged);
+        return merged;
+      });
+    }).then(function(merged){
+      mergeIntoState(merged, null);
+      lastKnownShared = JSON.parse(JSON.stringify(merged));
+      renderAll();
+    });
+    var p2 = fbDb.collection('users').doc(currentUser.uid).set(parts.personal, {merge:true});
+    Promise.all([p1, p2]).then(function(){
+      setSaveIndicator('saved');
+    }).catch(function(err){
+      console.error('Gagal simpan ke Firestore', err);
+      setSaveIndicator('error');
+    });
+  }, 250);
+}
+function migrateState(){
+  if(!state.attendance) state.attendance = {};
+  if(!state.aiChats) state.aiChats = {};
+  /* aiChats sekarang object keyed by UID supaya tiap user punya riwayat sendiri */
+  if(Array.isArray(state.aiChats)) state.aiChats = {};
+  if(!state.notifiedTaskIds) state.notifiedTaskIds = [];
+  if(!state.notifications) state.notifications = [];
+  if(!state.materials) state.materials = {};
+  if(!state.grades) state.grades = {};
+  if(!state.krsSelected) state.krsSelected = state.classes.map(function(c){ return c.id; });
+  if(!state.profile) state.profile = {photo:'', bio:'', prodi:'', semester:1, phone:'', notifEnabled:true};
+  if(!state.qrSessions) state.qrSessions = {};
+  if(!state.zoomSessions) state.zoomSessions = [];
+  (state.classes || []).forEach(function(c){ if(!c.sks) c.sks = 3; });
+  (state.tasks || []).forEach(function(t){ if(t.submission === undefined) t.submission = null; });
+  (state.labBookings || []).forEach(function(b){ if(!b.status) b.status = 'approved'; });
+}
+function loadGuestState(){
+  try{
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){ state = JSON.parse(raw); migrateState(); return true; }
+  } catch(err){ /* abaikan, pakai default */ }
+  return false;
+}
+function startFirestoreSync(uid){
+  stopFirestoreSync();
+  unsubShared = fbDb.doc(SHARED_DOC).onSnapshot(function(snap){
+    if(snap.exists){
+      mergeIntoState(snap.data(), null);
+      lastKnownShared = JSON.parse(JSON.stringify(snap.data()));
+    } else {
+      var parts = splitState();
+      fbDb.doc(SHARED_DOC).set(parts.shared);
+      lastKnownShared = JSON.parse(JSON.stringify(parts.shared));
+    }
+    renderAll();
+  }, function(err){ console.error('Sync shared error', err); setSaveIndicator('error'); });
+
+  unsubPersonal = fbDb.collection('users').doc(uid).onSnapshot(function(snap){
+    if(snap.exists){
+      mergeIntoState(null, snap.data());
+    } else {
+      var parts = splitState();
+      fbDb.collection('users').doc(uid).set(parts.personal);
+    }
+    renderAll();
+    setSaveIndicator('saved');
+  }, function(err){ console.error('Sync personal error', err); setSaveIndicator('error'); });
+}
+function stopFirestoreSync(){
+  if(unsubShared){ unsubShared(); unsubShared = null; }
+  if(unsubPersonal){ unsubPersonal(); unsubPersonal = null; }
+}
+function resetToDefault(){
+  if(!confirm('Reset tugas & poin pribadimu ke contoh awal? Data bersama (forum, jadwal, dll) tidak ikut berubah.')) return;
+  PERSONAL_FIELDS.forEach(function(k){ state[k] = JSON.parse(JSON.stringify(defaultState[k])); });
+  persistState();
+  renderAll();
+  toast('Data pribadi direset ke contoh awal');
+}
+
+/* ========================== APP ENTRY / EXIT ========================== */
+function enterApp(userInfo){
+  document.getElementById('loginShell').style.display = 'none';
+  document.getElementById('appShell').style.display = 'flex';
+  var displayName = userInfo.displayName || (userInfo.email ? userInfo.email.split('@')[0] : 'Mahasiswa');
+  document.getElementById('profileName').textContent = displayName;
+  document.getElementById('profileRole').textContent = userInfo.email || 'Mode tamu';
+  document.getElementById('profileAvatar').textContent = initials(displayName);
+  var h1 = document.querySelector('#view-dashboard h1');
+  if(h1) h1.innerHTML = 'Halo, ' + esc(displayName);
+  requestNotifPermission();
+}
+function showLoginScreen(){
+  stopFirestoreSync();
+  document.getElementById('appShell').style.display = 'none';
+  document.getElementById('loginShell').style.display = 'flex';
+  document.getElementById('authEmail').value = '';
+  document.getElementById('authPassword').value = '';
+  authMsg('');
+}
+
+/* ========================== MODAL ========================== */
+function openModal(title, bodyHtml, onSave, onDelete){
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = bodyHtml;
+  currentModalSave = onSave || null;
+  currentModalDelete = onDelete || null;
+  var delBtn = document.getElementById('modalDeleteBtn');
+  delBtn.style.display = onDelete ? 'inline-flex' : 'none';
+  document.getElementById('modalOverlay').classList.add('active');
+}
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('active');
+  currentModalSave = null;
+  currentModalDelete = null;
+}
+document.getElementById('modalSaveBtn').addEventListener('click', function(){
+  if(currentModalSave) currentModalSave();
+});
+document.getElementById('modalDeleteBtn').addEventListener('click', function(){
+  if(currentModalDelete) currentModalDelete();
+});
+document.getElementById('modalOverlay').addEventListener('click', function(e){
+  if(e.target.id === 'modalOverlay') closeModal();
+});
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape') closeModal();
+});
+function pickColor(el){
+  var wrap = el.parentElement;
+  wrap.querySelectorAll('.color-dot-pick').forEach(function(d){ d.classList.remove('selected'); });
+  el.classList.add('selected');
+}
+function classOptionsHtml(selectedId){
+  var html = '<option value="">Tanpa kelas</option>';
+  state.classes.forEach(function(c){
+    html += '<option value="' + c.id + '"' + (c.id === selectedId ? ' selected' : '') + '>' + esc(c.name) + '</option>';
+  });
+  return html;
+}
+
+/* ========================== KELAS ========================== */
+function openClassModal(id){
+  var cls = id ? getClass(id) : null;
+  var colors = ['purple','pink','mint'];
+  var selectedColor = cls ? cls.color : 'purple';
+  var dots = colors.map(function(c){
+    return '<div class="color-dot-pick' + (c === selectedColor ? ' selected' : '') + '" data-color="' + c + '" style="background:' + colorDeep(c) + '" onclick="pickColor(this)"></div>';
+  }).join('');
+  var body =
+    '<div class="field"><label>Nama mata kuliah</label><input id="f-name" value="' + (cls ? esc(cls.name) : '') + '" placeholder="cth. Algoritma dan pemrograman"></div>' +
+    '<div class="field"><label>Dosen pengampu</label><input id="f-dosen" value="' + (cls ? esc(cls.dosen) : '') + '" placeholder="cth. Bu Ani Suryani"></div>' +
+    '<div class="field"><label>Warna label</label><div class="color-options">' + dots + '</div></div>';
+  openModal(cls ? 'Edit kelas' : 'Tambah kelas', body, function(){ saveClass(id); }, cls ? function(){ deleteClass(id, true); } : null);
+}
+function saveClass(id){
+  var name = document.getElementById('f-name').value.trim();
+  var dosen = document.getElementById('f-dosen').value.trim();
+  var colorEl = document.querySelector('#modalBody .color-dot-pick.selected');
+  var color = colorEl ? colorEl.getAttribute('data-color') : 'purple';
+  if(!name){ toast('Nama kelas wajib diisi'); return; }
+  if(id){
+    var cls = getClass(id);
+    cls.name = name; cls.dosen = dosen; cls.color = color;
+    toast('Kelas diperbarui');
+  } else {
+    var newId = uid('c');
+    state.classes.push({id:newId, name:name, dosen:dosen, color:color});
+    state.chats[newId] = [];
+    state.activeChatClass = newId;
+    toast('Kelas ditambahkan, siap jadi grup diskusi baru');
+  }
+  persistState();
+  closeModal();
+  renderClasses();
+  renderChat();
+  renderSchedule();
+  renderTasks();
+}
+function deleteClass(id, fromModal){
+  if(!confirm('Hapus kelas ini? Diskusi, jadwal, dan tugas yang terhubung ikut hilang.')) return;
+  state.classes = state.classes.filter(function(c){ return c.id !== id; });
+  delete state.chats[id];
+  state.schedule = state.schedule.filter(function(s){ return s.classId !== id; });
+  state.tasks = state.tasks.filter(function(t){ return t.classId !== id; });
+  if(state.activeChatClass === id){
+    state.activeChatClass = state.classes.length ? state.classes[0].id : null;
+  }
+  toast('Kelas dihapus');
+  persistState();
+  if(fromModal) closeModal();
+  renderClasses();
+  renderChat();
+  renderSchedule();
+  renderTasks();
+}
+function renderClasses(){
+  var grid = document.getElementById('classGrid');
+  if(!state.classes.length){
+    grid.innerHTML = '<div class="empty-box">Belum ada kelas. Tambah kelas pertamamu biar jadwal, tugas, dan forum bisa langsung dipakai.</div>';
+  } else {
+    grid.innerHTML = state.classes.map(function(c){
+      return '<div class="class-card">' +
+        '<div class="ctop"><div class="cavatar" style="background:' + colorDeep(c.color) + '">' + esc(initials(c.name)) + '</div>' +
+        '<div><h3>' + esc(c.name) + '</h3><div class="dosen">' + esc(c.dosen || 'Dosen belum diisi') + '</div></div></div>' +
+        '<div class="cactions">' +
+        '<button class="btn-ghost" style="width:100%;" onclick="goToChat(\'' + c.id + '\')"><i class="ti ti-message-circle"></i> Diskusi</button>' +
+        '<div class="sub-actions">' +
+        '<button class="btn-label-sm edit" style="flex:1;" onclick="openClassModal(\'' + c.id + '\')"><i class="ti ti-pencil"></i> Edit kelas</button>' +
+        '<button class="btn-label-sm delete" style="flex:1;" onclick="deleteClass(\'' + c.id + '\')"><i class="ti ti-trash"></i> Hapus</button>' +
+        '</div></div></div>';
+    }).join('');
+  }
+  renderClassGroupList();
+}
+
+/* ========================== FORUM / CHAT PER KELAS ========================== */
+function renderClassGroupList(){
+  var list = document.getElementById('classGroupList');
+  if(!state.classes.length){
+    list.innerHTML = '<div class="empty-box" style="margin:10px;">Belum ada kelas.</div>';
+    return;
+  }
+  list.innerHTML = state.classes.map(function(c){
+    var msgs = state.chats[c.id] || [];
+    var last = msgs.length ? msgs[msgs.length - 1] : null;
+    var myUid = (!isGuestMode && currentUser) ? currentUser.uid : 'guest';
+    var lastIsMine = last ? (last.senderUid ? last.senderUid === myUid : !!last.mine) : false;
+    var preview = last ? (lastIsMine ? 'Kamu: ' : '') + last.text : 'Belum ada pesan';
+    var active = c.id === state.activeChatClass ? ' active' : '';
+    return '<div class="chat-group-item' + active + '" onclick="selectChat(\'' + c.id + '\')">' +
+      '<div class="gavatar" style="background:' + colorDeep(c.color) + '">' + esc(initials(c.name)) + '</div>' +
+      '<div class="ginfo"><div class="gname">' + esc(c.name) + '</div><div class="glast">' + esc(preview) + '</div></div>' +
+      '</div>';
+  }).join('');
+}
+function selectChat(id){
+  state.activeChatClass = id;
+  renderClassGroupList();
+  renderChat();
+}
+function goToChat(id){
+  state.activeChatClass = id;
+  document.querySelectorAll('.navitem').forEach(function(n){ n.classList.remove('active'); });
+  var navMatch = document.querySelector('.navitem[data-view="forum"]');
+  if(navMatch) navMatch.classList.add('active');
+  document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+  document.getElementById('view-forum').classList.add('active');
+  renderClassGroupList();
+  renderChat();
+  window.scrollTo(0,0);
+}
+function renderChat(){
+  var header = document.getElementById('chatHeader');
+  var msgsEl = document.getElementById('chatMessages');
+  var input = document.getElementById('chatInput');
+  var sendBtn = document.getElementById('chatSendBtn');
+  var cls = state.activeChatClass ? getClass(state.activeChatClass) : null;
+  if(!cls){
+    header.innerHTML = '<h3>Belum ada kelas dipilih</h3>';
+    msgsEl.innerHTML = '<div class="chat-empty"><i class="ti ti-message-circle" style="font-size:26px;"></i><div>Tambah atau pilih kelas dari daftar di kiri untuk mulai diskusi.</div></div>';
+    input.disabled = true; sendBtn.disabled = true;
+    return;
+  }
+  input.disabled = false; sendBtn.disabled = false;
+  header.innerHTML = '<div><h3>' + esc(cls.name) + '</h3><p>' + esc(cls.dosen || 'Dosen belum diisi') + '</p></div>' +
+    '<button class="btn-label-sm edit" onclick="openClassModal(\'' + cls.id + '\')"><i class="ti ti-pencil"></i> Edit kelas</button>';
+  var msgs = state.chats[cls.id] || [];
+  var myUid = (!isGuestMode && currentUser) ? currentUser.uid : 'guest';
+  if(!msgs.length){
+    msgsEl.innerHTML = '<div class="chat-empty"><i class="ti ti-messages" style="font-size:26px;"></i><div>Belum ada pesan di grup ' + esc(cls.name) + '. Mulai diskusinya!</div></div>';
+  } else {
+    msgsEl.innerHTML = msgs.map(function(m, idx){
+      var isMine = m.senderUid ? (m.senderUid === myUid) : !!m.mine;
+      var actions = isMine ? '<div class="msg-actions">' +
+        '<button class="msg-act-btn" onclick="editChatMsg(\'' + cls.id + '\',' + idx + ')" title="Edit"><i class="ti ti-pencil"></i></button>' +
+        '<button class="msg-act-btn" onclick="deleteChatMsg(\'' + cls.id + '\',' + idx + ')" title="Hapus"><i class="ti ti-trash"></i></button>' +
+        '</div>' : '';
+      return '<div class="msg ' + (isMine ? 'mine' : 'theirs') + '" style="position:relative;">' +
+        (isMine ? '' : '<div class="sender">' + esc(m.sender || 'Anonim') + '</div>') +
+        (m.text ? esc(m.text) : '') +
+        renderAttachment(m.file) +
+        '<span class="time">' + esc(m.time) + (m.edited ? ' · diedit' : '') + '</span>' +
+        actions + '</div>';
+    }).join('');
+  }
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+}
+function deleteChatMsg(classId, idx){
+  if(!state.chats[classId]) return;
+  state.chats[classId].splice(idx, 1);
+  persistState();
+  renderChat();
+}
+function editChatMsg(classId, idx){
+  var msg = state.chats[classId] && state.chats[classId][idx];
+  if(!msg) return;
+  var newText = prompt('Edit pesan:', msg.text || '');
+  if(newText === null) return;
+  msg.text = newText.trim();
+  msg.edited = true;
+  persistState();
+  renderChat();
+}
+var pendingChatFile = null;
+function handleChatFileSelect(inputEl){
+  var file = inputEl.files && inputEl.files[0];
+  if(!file) return;
+  if(file.size > 4 * 1024 * 1024){
+    toast('File maksimal 4MB ya 🙏');
+    inputEl.value = '';
+    return;
+  }
+  var reader = new FileReader();
+  reader.onload = function(e){
+    pendingChatFile = {name:file.name, type:file.type, dataUrl:e.target.result};
+    var prev = document.getElementById('chatFilePreview');
+    prev.style.display = 'block';
+    prev.innerHTML = '<i class="ti ti-paperclip"></i> ' + esc(file.name) + ' <button class="icon-btn-sm" style="display:inline-flex; vertical-align:middle;" onclick="clearChatFile()"><i class="ti ti-x"></i></button>';
+  };
+  reader.readAsDataURL(file);
+}
+function clearChatFile(){
+  pendingChatFile = null;
+  document.getElementById('chatFileInput').value = '';
+  var prev = document.getElementById('chatFilePreview');
+  prev.style.display = 'none'; prev.innerHTML = '';
+}
+function renderAttachment(file){
+  if(!file) return '';
+  if(file.type && file.type.indexOf('image/') === 0){
+    return '<div class="msg-attachment"><img src="' + file.dataUrl + '" alt="' + esc(file.name) + '" style="max-width:200px; border-radius:10px; display:block; margin-top:6px;"></div>';
+  }
+  return '<div class="msg-attachment" style="margin-top:6px;"><a href="' + file.dataUrl + '" download="' + esc(file.name) + '" style="display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:10px; background:rgba(142,111,222,0.12); font-size:12.5px;"><i class="ti ti-file-text"></i>' + esc(file.name) + '</a></div>';
+}
+function sendMessage(){
+  var input = document.getElementById('chatInput');
+  var text = input.value.trim();
+  var classId = state.activeChatClass;
+  if(!classId || (!text && !pendingChatFile)) return;
+  if(!state.chats[classId]) state.chats[classId] = [];
+  var senderUid = (!isGuestMode && currentUser) ? currentUser.uid : 'guest';
+  var senderName = (!isGuestMode && currentUser) ? (currentUser.displayName || currentUser.email.split('@')[0]) : 'Tamu';
+  state.chats[classId].push({senderUid: senderUid, sender: senderName, text:text, time:nowTime(), file: pendingChatFile});
+  input.value = '';
+  clearChatFile();
+  markActivity();
+  persistState();
+  renderChat();
+  renderClassGroupList();
+}
+document.getElementById('chatInput').addEventListener('keydown', function(e){
+  if(e.key === 'Enter'){ e.preventDefault(); sendMessage(); }
+});
+
+/* ========================== BOOKING LAB ========================== */
+function toggleNewLabInput(sel){
+  document.getElementById('f-lab-new-wrap').style.display = sel.value === '__new__' ? 'block' : 'none';
+}
+function openLabModal(id){
+  var item = id ? state.labBookings.filter(function(b){ return b.id === id; })[0] : null;
+  var labOptions = state.labs.map(function(l){
+    return '<option value="' + esc(l) + '"' + (item && item.lab === l ? ' selected' : '') + '>' + esc(l) + '</option>';
+  }).join('') + '<option value="__new__">+ Ruang lab baru</option>';
+  var body =
+    '<div class="field"><label>Ruang lab</label><select id="f-lab" onchange="toggleNewLabInput(this)">' + labOptions + '</select></div>' +
+    '<div class="field" id="f-lab-new-wrap" style="display:none;"><label>Nama ruang lab baru</label><input id="f-lab-new" placeholder="cth. Lab Robotika"></div>' +
+    '<div class="field"><label>Jam (cth. 08.00 - 10.00)</label><input id="f-time" value="' + (item ? esc(item.time) : '') + '" placeholder="08.00 - 10.00"></div>' +
+    '<div class="field"><label>Kapasitas total</label><input id="f-cap" type="number" min="1" value="' + (item ? item.cap : 20) + '"></div>';
+  openModal(item ? 'Edit booking slot' : 'Booking slot baru', body, function(){ saveLabBooking(id); }, item ? function(){ deleteLabBooking(id); } : null);
+}
+function saveLabBooking(id){
+  var labSel = document.getElementById('f-lab');
+  var lab = labSel.value === '__new__' ? document.getElementById('f-lab-new').value.trim() : labSel.value;
+  var time = document.getElementById('f-time').value.trim();
+  var cap = parseInt(document.getElementById('f-cap').value, 10) || 1;
+  if(!lab || !time){ toast('Ruang lab dan jam wajib diisi'); return; }
+  if(state.labs.indexOf(lab) === -1) state.labs.push(lab);
+  if(id){
+    var item = state.labBookings.filter(function(b){ return b.id === id; })[0];
+    if(!item.bookedBy) item.bookedBy = [];
+    if(cap < item.bookedBy.length){ toast('Kapasitas tidak bisa lebih kecil dari jumlah yang sudah booking (' + item.bookedBy.length + ')'); return; }
+    item.lab = lab; item.time = time; item.cap = cap;
+    toast('Slot diperbarui');
+  } else {
+    state.labBookings.push({id:uid('lb'), time:time, lab:lab, cap:cap, bookedBy:[], status:'pending'});
+    toast('Slot diajukan, menunggu persetujuan admin lab');
+    markActivity();
+  }
+  persistState();
+  closeModal();
+  renderLab();
+}
+function deleteLabBooking(id){
+  if(!confirm('Hapus / batalkan slot ini?')) return;
+  state.labBookings = state.labBookings.filter(function(b){ return b.id !== id; });
+  toast('Booking dihapus');
+  persistState();
+  closeModal();
+  renderLab();
+}
+function approveLab(id){
+  var item = state.labBookings.filter(function(b){ return b.id === id; })[0];
+  if(!item) return;
+  item.status = 'approved';
+  toast('Slot disetujui admin lab');
+  persistState();
+  renderLab();
+}
+function rejectLab(id){
+  var item = state.labBookings.filter(function(b){ return b.id === id; })[0];
+  if(!item) return;
+  item.status = 'rejected';
+  toast('Slot ditolak admin lab');
+  persistState();
+  renderLab();
+}
+function bookSlot(id){
+  var pre = state.labBookings.filter(function(b){ return b.id === id; })[0];
+  if(pre && pre.status === 'pending'){ toast('Slot ini masih menunggu persetujuan admin lab'); return; }
+  if(pre && pre.status === 'rejected'){ toast('Slot ini ditolak admin lab'); return; }
+  var myUid = (!isGuestMode && currentUser) ? currentUser.uid : 'guest';
+  if(isGuestMode || !firebaseReady){
+    /* Mode tamu: tidak ada server untuk koordinasi multi-user, jadi cukup cek di local state */
+    var item = state.labBookings.filter(function(b){ return b.id === id; })[0];
+    if(!item) return;
+    if(!item.bookedBy) item.bookedBy = [];
+    if(item.bookedBy.indexOf(myUid) !== -1){ toast('Kamu sudah booking slot ini'); return; }
+    if(item.bookedBy.length >= item.cap){ toast('Slot sudah penuh'); return; }
+    item.bookedBy.push(myUid);
+    toast('Slot berhasil dibooking');
+    markActivity();
+    persistState();
+    renderLab();
+    return;
+  }
+  /* Mode login: pakai transaction supaya cek kapasitas & penambahan booking atomik di server,
+     mencegah 2 user overbook slot yang sama saat klik nyaris bersamaan. */
+  fbDb.runTransaction(function(tx){
+    return tx.get(fbDb.doc(SHARED_DOC)).then(function(snap){
+      var shared = snap.exists ? snap.data() : {};
+      var bookings = shared.labBookings || [];
+      var item = bookings.filter(function(b){ return b.id === id; })[0];
+      if(!item) throw new Error('not-found');
+      if(!item.bookedBy) item.bookedBy = [];
+      if(item.bookedBy.indexOf(myUid) !== -1) throw new Error('already-booked');
+      if(item.bookedBy.length >= item.cap) throw new Error('full');
+      item.bookedBy.push(myUid);
+      tx.set(fbDb.doc(SHARED_DOC), shared, {merge:true});
+      return shared;
+    });
+  }).then(function(shared){
+    mergeIntoState(shared, null);
+    lastKnownShared = JSON.parse(JSON.stringify(shared));
+    markActivity();
+    renderAll();
+    toast('Slot berhasil dibooking');
+  }).catch(function(err){
+    if(err && err.message === 'already-booked') toast('Kamu sudah booking slot ini');
+    else if(err && err.message === 'full') toast('Slot sudah penuh');
+    else { console.error('Gagal booking slot', err); toast('Gagal booking, coba lagi'); }
+  });
+}
+function cancelSlot(id){
+  var myUid = (!isGuestMode && currentUser) ? currentUser.uid : 'guest';
+  if(isGuestMode || !firebaseReady){
+    var item = state.labBookings.filter(function(b){ return b.id === id; })[0];
+    if(!item || !item.bookedBy || item.bookedBy.indexOf(myUid) === -1) return;
+    item.bookedBy = item.bookedBy.filter(function(u){ return u !== myUid; });
+    toast('Booking dibatalkan');
+    persistState();
+    renderLab();
+    return;
+  }
+  fbDb.runTransaction(function(tx){
+    return tx.get(fbDb.doc(SHARED_DOC)).then(function(snap){
+      var shared = snap.exists ? snap.data() : {};
+      var bookings = shared.labBookings || [];
+      var item = bookings.filter(function(b){ return b.id === id; })[0];
+      if(!item || !item.bookedBy) throw new Error('not-found');
+      item.bookedBy = item.bookedBy.filter(function(u){ return u !== myUid; });
+      tx.set(fbDb.doc(SHARED_DOC), shared, {merge:true});
+      return shared;
+    });
+  }).then(function(shared){
+    mergeIntoState(shared, null);
+    lastKnownShared = JSON.parse(JSON.stringify(shared));
+    renderAll();
+    toast('Booking dibatalkan');
+  }).catch(function(err){
+    console.error('Gagal batalkan slot', err);
+    toast('Gagal membatalkan, coba lagi');
+  });
+}
+function renderLab(){
+  var myUid = (!isGuestMode && currentUser) ? currentUser.uid : 'guest';
+  var summary = document.getElementById('labSummary');
+  summary.innerHTML = state.labs.map(function(lab){
+    var rows = state.labBookings.filter(function(b){ return b.lab === lab; });
+    var openCount = rows.filter(function(b){ return (b.bookedBy ? b.bookedBy.length : 0) < b.cap; }).length;
+    var label = rows.length === 0 ? 'belum ada slot' : (openCount > 0 ? openCount + ' slot kosong' : 'penuh hari ini');
+    var dotColor = (rows.length && openCount === 0) ? 'var(--pink-deep)' : 'var(--mint-deep)';
+    return '<div class="lab-room"><span class="dot" style="background:' + dotColor + '"></span>' + esc(lab) + ' &middot; ' + esc(label) + '</div>';
+  }).join('');
+  var body = document.getElementById('labTableBody');
+  if(!state.labBookings.length){
+    body.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--ink-soft); padding:1.5rem 0;">Belum ada slot lab. Klik "Booking slot" untuk menambah.</td></tr>';
+    return;
+  }
+  body.innerHTML = state.labBookings.map(function(b){
+    var bookedBy = b.bookedBy || [];
+    var used = bookedBy.length;
+    var isMine = bookedBy.indexOf(myUid) !== -1;
+    var approvalStatus = b.status || 'approved';
+    var approvalHtml, adminBtns;
+    if(approvalStatus === 'approved'){
+      approvalHtml = '<span class="pill mine">Disetujui</span>';
+      adminBtns = '';
+    } else if(approvalStatus === 'rejected'){
+      approvalHtml = '<span class="pill full">Ditolak</span>';
+      adminBtns = '<button class="btn-label-sm edit" onclick="approveLab(\'' + b.id + '\')"><i class="ti ti-check"></i> Setujui</button>';
+    } else {
+      approvalHtml = '<span class="pill open">Menunggu admin</span>';
+      adminBtns = '<button class="btn-label-sm edit" onclick="approveLab(\'' + b.id + '\')"><i class="ti ti-check"></i> Setujui</button>' +
+        '<button class="btn-label-sm delete" onclick="rejectLab(\'' + b.id + '\')"><i class="ti ti-x"></i> Tolak</button>';
+    }
+    var statusHtml, actionBtn;
+    if(approvalStatus !== 'approved'){
+      statusHtml = '<span class="pill" style="opacity:.6;">-</span>';
+      actionBtn = '<button class="btn-ghost" disabled style="opacity:.5;">Belum disetujui</button>';
+    } else if(isMine){
+      statusHtml = '<span class="pill mine">Booking kamu</span>';
+      actionBtn = '<button class="btn-ghost" onclick="cancelSlot(\'' + b.id + '\')">Batalkan</button>';
+    } else if(used >= b.cap){
+      statusHtml = '<span class="pill full">Penuh</span>';
+      actionBtn = '<button class="btn-ghost" disabled style="opacity:.5;">Penuh</button>';
+    } else {
+      statusHtml = '<span class="pill open">Tersedia</span>';
+      actionBtn = '<button class="btn-primary" style="padding:6px 12px; font-size:12.5px;" onclick="bookSlot(\'' + b.id + '\')">Pesan</button>';
+    }
+    return '<tr><td>' + esc(b.time) + '</td><td>' + esc(b.lab) + '</td><td>' + used + ' / ' + b.cap + '</td>' +
+      '<td><div class="row-actions-labeled" style="flex-wrap:wrap; align-items:center;">' + approvalHtml + adminBtns + '</div></td>' +
+      '<td>' + statusHtml + '</td>' +
+      '<td><div class="row-actions-labeled" style="flex-wrap:wrap;">' + actionBtn +
+      '<button class="btn-label-sm edit" onclick="openLabModal(\'' + b.id + '\')"><i class="ti ti-pencil"></i> Edit</button>' +
+      '<button class="btn-label-sm delete" onclick="deleteLabBooking(\'' + b.id + '\')"><i class="ti ti-trash"></i> Hapus</button>' +
+      '</div></td></tr>';
+  }).join('');
+}
+
+/* ========================== JADWAL KULIAH ========================== */
+function openScheduleModal(id, presetDay, presetTime){
+  var item = id ? state.schedule.filter(function(s){ return s.id === id; })[0] : null;
+  var dayOptions = state.scheduleDays.map(function(d){
+    var sel = item ? item.day === d : presetDay === d;
+    return '<option value="' + d + '"' + (sel ? ' selected' : '') + '>' + d + '</option>';
+  }).join('');
+  var body =
+    '<div class="field"><label>Hari</label><select id="f-day">' + dayOptions + '</select></div>' +
+    '<div class="field"><label>Jam (cth. 08.00)</label><input id="f-time" value="' + (item ? esc(item.time) : esc(presetTime || '')) + '" placeholder="08.00"></div>' +
+    '<div class="field"><label>Mata kuliah</label><select id="f-class">' + classOptionsHtml(item ? item.classId : '') + '</select></div>' +
+    '<div class="field"><label>Ruang</label><input id="f-room" value="' + (item ? esc(item.room) : '') + '" placeholder="cth. Ruang 2.1"></div>';
+  openModal(item ? 'Edit jadwal' : 'Tambah jadwal', body, function(){ saveSchedule(id); }, item ? function(){ deleteSchedule(id); } : null);
+}
+function saveSchedule(id){
+  var day = document.getElementById('f-day').value;
+  var timeRaw = document.getElementById('f-time').value.trim();
+  var classId = document.getElementById('f-class').value;
+  var room = document.getElementById('f-room').value.trim();
+  if(!timeRaw){ toast('Jam wajib diisi'); return; }
+  /* Validasi format jam: terima "08.00" atau "08:00", normalisasi ke format dengan titik (08.00) */
+  var timeMatch = timeRaw.match(/^(\d{1,2})[.:](\d{2})$/);
+  if(!timeMatch){ toast('Format jam tidak valid. Pakai format HH.MM, contoh: 08.00'); return; }
+  var hh = parseInt(timeMatch[1], 10), mm = parseInt(timeMatch[2], 10);
+  if(hh > 23 || mm > 59){ toast('Jam tidak valid. Jam 0-23, menit 0-59.'); return; }
+  var time = (hh < 10 ? '0' + hh : hh) + '.' + (mm < 10 ? '0' + mm : mm);
+  /* Deteksi bentrok: ada entry lain (bukan diri sendiri) di hari+jam yang sama */
+  var clash = state.schedule.filter(function(s){ return s.day === day && s.time === time && s.id !== id; })[0];
+  if(clash){
+    var clashClass = getClass(clash.classId);
+    toast('Bentrok! Sudah ada "' + (clashClass ? clashClass.name : 'kelas lain') + '" di ' + day + ' jam ' + time);
+    return;
+  }
+  if(state.scheduleTimes.indexOf(time) === -1){
+    state.scheduleTimes.push(time);
+    state.scheduleTimes.sort();
+  }
+  if(id){
+    var item = state.schedule.filter(function(s){ return s.id === id; })[0];
+    item.day = day; item.time = time; item.classId = classId; item.room = room;
+    toast('Jadwal diperbarui');
+  } else {
+    state.schedule.push({id:uid('s'), day:day, time:time, classId:classId, room:room});
+    toast('Jadwal ditambahkan');
+  }
+  persistState();
+  closeModal();
+  renderSchedule();
+}
+function deleteSchedule(id){
+  if(!confirm('Hapus jadwal ini?')) return;
+  state.schedule = state.schedule.filter(function(s){ return s.id !== id; });
+  toast('Jadwal dihapus');
+  persistState();
+  closeModal();
+  renderSchedule();
+}
+function renderSchedule(){
+  var grid = document.getElementById('scheduleGrid');
+  grid.style.gridTemplateColumns = '60px repeat(' + state.scheduleDays.length + ', 1fr)';
+  var html = '<div></div>';
+  state.scheduleDays.forEach(function(d){ html += '<div class="day-label">' + d + '</div>'; });
+  state.scheduleTimes.forEach(function(time){
+    html += '<div class="time-label">' + esc(time) + '</div>';
+    state.scheduleDays.forEach(function(day){
+      var entry = state.schedule.filter(function(s){ return s.day === day && s.time === time; })[0];
+      if(entry){
+        var cls = getClass(entry.classId);
+        var colorClass = cls && cls.color === 'pink' ? 'pink' : (cls && cls.color === 'mint' ? 'mint' : '');
+        html += '<div class="slot-card ' + colorClass + '" onclick="openScheduleModal(\'' + entry.id + '\')">' +
+          esc(cls ? cls.name : 'Tanpa kelas') + '<small>' + esc(entry.room || '') + '</small></div>';
+      } else {
+        html += '<div class="slot-empty" onclick="openScheduleModal(null, \'' + day + '\', \'' + esc(time) + '\')"><i class="ti ti-plus"></i></div>';
+      }
+    });
+  });
+  grid.innerHTML = html;
+}
+
+/* ========================== TUGAS & DEADLINE ========================== */
+function openTaskModal(id){
+  var item = id ? state.tasks.filter(function(t){ return t.id === id; })[0] : null;
+  var body =
+    '<div class="field"><label>Judul tugas</label><input id="f-title" value="' + (item ? esc(item.title) : '') + '" placeholder="cth. Laporan praktikum"></div>' +
+    '<div class="field"><label>Mata kuliah</label><select id="f-class">' + classOptionsHtml(item ? item.classId : '') + '</select></div>' +
+    '<div class="field"><label>Deadline</label><input id="f-deadline" type="date" value="' + (item ? item.deadline : addDays(3)) + '"></div>';
+  openModal(item ? 'Edit tugas' : 'Tambah tugas', body, function(){ saveTask(id); }, item ? function(){ deleteTask(id); } : null);
+}
+function saveTask(id){
+  var title = document.getElementById('f-title').value.trim();
+  var classId = document.getElementById('f-class').value;
+  var deadline = document.getElementById('f-deadline').value;
+  if(!title || !deadline){ toast('Judul dan deadline wajib diisi'); return; }
+  if(id){
+    var item = state.tasks.filter(function(t){ return t.id === id; })[0];
+    item.title = title; item.classId = classId; item.deadline = deadline;
+    toast('Tugas diperbarui');
+  } else {
+    state.tasks.push({id:uid('t'), title:title, classId:classId, deadline:deadline, done:false, submission:null});
+    toast('Tugas ditambahkan');
+  }
+  persistState();
+  closeModal();
+  renderTasks();
+}
+function deleteTask(id){
+  if(!confirm('Hapus tugas ini?')) return;
+  state.tasks = state.tasks.filter(function(t){ return t.id !== id; });
+  toast('Tugas dihapus');
+  persistState();
+  closeModal();
+  renderTasks();
+}
+function toggleTask(id, checked){
+  var item = state.tasks.filter(function(t){ return t.id === id; })[0];
+  if(!item) return;
+  item.done = checked;
+  if(checked) markActivity();
+  persistState();
+  renderTasks();
+  renderAchievement();
+}
+function deadlineInfo(task){
+  if(task.done) return {text:'Selesai', cls:'ok'};
+  var today = stripTime(new Date());
+  var d = new Date(task.deadline + 'T00:00:00');
+  var diff = Math.round((d - today) / 86400000);
+  if(diff < 0) return {text:'Lewat deadline', cls:'urgent'};
+  if(diff === 0) return {text:'Hari ini', cls:'urgent'};
+  if(diff === 1) return {text:'Besok', cls:'urgent'};
+  if(diff <= 5) return {text:diff + ' hari', cls:'soon'};
+  return {text:diff + ' hari', cls:'normal'};
+}
+function renderTasks(){
+  var list = document.getElementById('taskList');
+  if(!state.tasks.length){
+    list.innerHTML = '<div class="empty-box">Belum ada tugas. Klik "Tambah tugas" untuk mulai mencatat.</div>';
+    return;
+  }
+  var sorted = state.tasks.slice().sort(function(a,b){
+    if(a.done !== b.done) return a.done ? 1 : -1;
+    return a.deadline.localeCompare(b.deadline);
+  });
+  list.innerHTML = sorted.map(function(t){
+    var info = deadlineInfo(t);
+    var submissionHtml = t.submission
+      ? '<a href="' + t.submission.dataUrl + '" download="' + esc(t.submission.name) + '" class="btn-label-sm" style="background:rgba(79,168,119,0.15); color:#2f7a52;"><i class="ti ti-circle-check"></i> ' + esc(t.submission.name) + '</a>'
+      : '<button class="btn-label-sm edit" onclick="document.getElementById(\'submitInput-' + t.id + '\').click()"><i class="ti ti-upload"></i> Kumpulkan</button>';
+    return '<div class="task-row' + (t.done ? ' done' : '') + '">' +
+      '<input type="checkbox" ' + (t.done ? 'checked' : '') + ' onchange="toggleTask(\'' + t.id + '\', this.checked)">' +
+      '<div class="info"><div class="t">' + esc(t.title) + '</div><div class="m">' + esc(className(t.classId)) + '</div></div>' +
+      '<span class="badge-deadline ' + info.cls + '">' + esc(info.text) + '</span>' +
+      '<div class="row-actions-labeled">' +
+      submissionHtml +
+      '<input type="file" id="submitInput-' + t.id + '" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" style="display:none;" onchange="handleTaskSubmission(this, \'' + t.id + '\')">' +
+      '<button class="btn-label-sm edit" onclick="openTaskModal(\'' + t.id + '\')"><i class="ti ti-pencil"></i> Edit</button>' +
+      '<button class="btn-label-sm delete" onclick="deleteTaskDirect(\'' + t.id + '\')"><i class="ti ti-trash"></i> Hapus</button>' +
+      '</div></div>';
+  }).join('');
+}
+function handleTaskSubmission(inputEl, taskId){
+  var file = inputEl.files && inputEl.files[0];
+  if(!file) return;
+  if(file.size > 5 * 1024 * 1024){ toast('File maksimal 5MB ya 🙏'); inputEl.value=''; return; }
+  var reader = new FileReader();
+  reader.onload = function(e){
+    var item = state.tasks.filter(function(t){ return t.id === taskId; })[0];
+    if(!item) return;
+    item.submission = {name:file.name, type:file.type, dataUrl:e.target.result, time:nowTime()};
+    item.done = true;
+    toast('Tugas terkumpul ✅');
+    markActivity();
+    persistState();
+    renderTasks();
+    renderAchievement();
+    pushNotification('Tugas terkumpul', '"' + item.title + '" berhasil dikumpulkan.', 'success', 'tugas');
+  };
+  reader.readAsDataURL(file);
+}
+function deleteTaskDirect(id){
+  if(!confirm('Hapus tugas ini?')) return;
+  state.tasks = state.tasks.filter(function(t){ return t.id !== id; });
+  toast('Tugas dihapus');
+  persistState();
+  renderTasks();
+  renderAchievement();
+}
+
+/* ========================== STUDY GROUP ========================== */
+function openStudyGroupModal(id){
+  var item = id ? state.studyGroups.filter(function(g){ return g.id === id; })[0] : null;
+  var body =
+    '<div class="field"><label>Nama grup</label><input id="f-title" value="' + (item ? esc(item.title) : '') + '" placeholder="cth. Belajar bareng basis data"></div>' +
+    '<div class="field"><label>Deskripsi</label><textarea id="f-desc">' + (item ? esc(item.desc) : '') + '</textarea></div>' +
+    '<div class="field"><label>Tag (pisahkan dengan koma)</label><input id="f-tags" value="' + (item ? esc(item.tags.join(', ')) : '') + '" placeholder="cth. Basis data, Rabu malam"></div>';
+  openModal(item ? 'Edit study group' : 'Buat study group', body, function(){ saveStudyGroup(id); }, item ? function(){ deleteStudyGroup(id); } : null);
+}
+function saveStudyGroup(id){
+  var title = document.getElementById('f-title').value.trim();
+  var desc = document.getElementById('f-desc').value.trim();
+  var tags = document.getElementById('f-tags').value.split(',').map(function(t){ return t.trim(); }).filter(Boolean);
+  if(!title){ toast('Nama grup wajib diisi'); return; }
+  if(id){
+    var item = state.studyGroups.filter(function(g){ return g.id === id; })[0];
+    item.title = title; item.desc = desc; item.tags = tags;
+    toast('Study group diperbarui');
+  } else {
+    state.studyGroups.push({id:uid('g'), title:title, desc:desc, tags:tags, members:['Aku'], joined:true});
+    toast('Study group dibuat, kamu otomatis jadi anggota');
+  }
+  persistState();
+  closeModal();
+  renderStudyGroups();
+  renderAchievement();
+}
+function deleteStudyGroup(id){
+  if(!confirm('Hapus study group ini?')) return;
+  state.studyGroups = state.studyGroups.filter(function(g){ return g.id !== id; });
+  toast('Study group dihapus');
+  persistState();
+  closeModal();
+  renderStudyGroups();
+  renderAchievement();
+}
+function toggleJoinGroup(id){
+  var item = state.studyGroups.filter(function(g){ return g.id === id; })[0];
+  if(!item) return;
+  var myName = (!isGuestMode && currentUser) ? (currentUser.displayName || currentUser.email.split('@')[0]) : 'Tamu';
+  if(item.joined){
+    item.joined = false;
+    item.members = item.members.filter(function(m){ return m !== myName && m !== 'Aku'; });
+    toast('Keluar dari grup');
+  } else {
+    item.joined = true;
+    if(item.members.indexOf(myName) === -1) item.members.push(myName);
+    toast('Berhasil gabung grup 👥');
+    markActivity();
+    pushNotification('Gabung study group', 'Kamu bergabung ke "' + item.title + '"', 'success', 'studygroup');
+  }
+  persistState();
+  renderStudyGroups();
+  renderAchievement();
+}
+function renderStudyGroups(){
+  var grid = document.getElementById('sgGrid');
+  if(!state.studyGroups.length){
+    grid.innerHTML = '<div class="empty-box">Belum ada study group. Buat grup pertamamu.</div>';
+    return;
+  }
+  grid.innerHTML = state.studyGroups.map(function(g){
+    var members = g.members || [];
+    var tags = g.tags.map(function(t){ return '<span>' + esc(t) + '</span>'; }).join('');
+    var memberNames = members.slice(0,6).map(function(m){
+      return '<div style="display:inline-flex; align-items:center; gap:4px; background:var(--lav); border-radius:20px; padding:2px 8px; font-size:11.5px;">' +
+        '<div style="width:18px; height:18px; border-radius:50%; background:var(--purple-deep); color:#fff; display:inline-flex; align-items:center; justify-content:center; font-size:9px; font-weight:700;">' + esc((m[0]||'?').toUpperCase()) + '</div>' +
+        esc(m) + '</div>';
+    }).join('');
+    var extra = members.length > 6 ? '<span style="font-size:11.5px; color:var(--ink-soft);">+' + (members.length-6) + ' lainnya</span>' : '';
+    return '<div class="sg-card">' +
+      '<div class="sg-top"><h3 style="font-size:15px;">' + esc(g.title) + '</h3></div>' +
+      '<p style="font-size:12.5px; color:var(--ink-soft); margin:0 0 6px;">' + esc(g.desc || 'Belum ada deskripsi.') + '</p>' +
+      '<div class="tags">' + tags + '</div>' +
+      '<div style="margin:8px 0; display:flex; flex-wrap:wrap; gap:4px; align-items:center;">' +
+        '<span style="font-size:11.5px; color:var(--ink-soft); font-weight:600;">' + members.length + ' anggota:</span> ' +
+        memberNames + extra +
+      '</div>' +
+      '<div class="sg-foot" style="margin-top:8px;">' +
+        '<button class="' + (g.joined ? 'btn-ghost' : 'btn-primary') + '" style="padding:6px 14px; font-size:12.5px;" onclick="toggleJoinGroup(\'' + g.id + '\')">' + (g.joined ? '✓ Keluar grup' : '+ Gabung') + '</button>' +
+        '<div class="row-actions-labeled">' +
+          '<button class="btn-label-sm edit" onclick="openStudyGroupModal(\'' + g.id + '\')"><i class="ti ti-pencil"></i> Edit</button>' +
+          '<button class="btn-label-sm delete" onclick="deleteStudyGroup(\'' + g.id + '\')"><i class="ti ti-trash"></i> Hapus</button>' +
+        '</div>' +
+      '</div>' +
+      '</div>';
+  }).join('');
+}
+
+/* ========================== STREAK ========================== */
+function todayStr(){ return new Date().toISOString().slice(0,10); }
+function decayStreakIfNeeded(){
+  if(!state.lastStreakDate){ state.streak = state.streak || 0; return; }
+  var today = stripTime(new Date());
+  var last = new Date(state.lastStreakDate + 'T00:00:00');
+  var diff = Math.round((today - last) / 86400000);
+  if(diff > 1){
+    state.streak = 0;
+    persistState();
+  }
+}
+function markActivity(){
+  var today = todayStr();
+  if(state.lastStreakDate === today) return; /* sudah dihitung hari ini */
+  var y = new Date(); y.setDate(y.getDate() - 1);
+  var yesterday = y.toISOString().slice(0,10);
+  if(state.lastStreakDate === yesterday){
+    state.streak = (state.streak || 0) + 1;
+    toast('Streak naik jadi ' + state.streak + ' hari! 🔥');
+  } else {
+    state.streak = 1;
+    toast('Streak dimulai dari hari ini 🔥');
+  }
+  state.lastStreakDate = today;
+  persistState();
+  renderStreak();
+  renderAchievement();
+}
+function renderStreak(){
+  var n = state.streak || 0;
+  var titleEl = document.getElementById('streakTitle');
+  var ringEl = document.getElementById('streakRing');
+  var statEl = document.getElementById('statStreak');
+  if(titleEl) titleEl.textContent = 'Streak belajar ' + n + ' hari';
+  if(ringEl) ringEl.innerHTML = n + '&#128293;';
+  if(statEl) statEl.textContent = n;
+}
+
+/* ========================== ACHIEVEMENT (terhubung otomatis) ========================== */
+function renderAchievement(){
+  var doneCount = state.tasks.filter(function(t){ return t.done; }).length;
+  var extra = Math.max(0, doneCount - state.baseDoneCount);
+  var poin = state.basePoin + extra * 50;
+  document.getElementById('statPoin').textContent = poin.toLocaleString('id-ID');
+
+  renderStreak();
+
+  var anyJoined = state.studyGroups.some(function(g){ return g.joined; });
+  var streakOk = (state.streak || 0) >= 5;
+  var taskOk = doneCount >= 10;
+  var myUid = (!isGuestMode && currentUser) ? currentUser.uid : 'guest';
+  var labOk = state.labBookings.some(function(b){ return b.bookedBy && b.bookedBy.indexOf(myUid) !== -1; });
+
+  toggleLock('achStreak5', streakOk);
+  toggleLock('achTask10', taskOk);
+  toggleLock('achLabExplorer', labOk);
+  toggleLock('achTeamPlayer', anyJoined);
+
+  var badge = [streakOk, taskOk, labOk, anyJoined].filter(Boolean).length;
+  document.getElementById('statBadge').textContent = badge;
+}
+function toggleLock(id, unlocked){
+  var el = document.getElementById(id);
+  if(!el) return;
+  if(unlocked) el.classList.remove('locked');
+  else el.classList.add('locked');
+}
+
+/* ========================== ABSENSI ========================== */
+function todayStr(){ return new Date().toISOString().slice(0,10); }
+function checkIn(classId){
+  if(!state.attendance[classId]) state.attendance[classId] = [];
+  var today = todayStr();
+  if(state.attendance[classId].indexOf(today) !== -1){ toast('Sudah check-in hari ini'); return; }
+  state.attendance[classId].push(today);
+  toast('Absen tercatat, semangat kuliahnya! ✅');
+  markActivity();
+  persistState();
+  renderAttendance();
+}
+function renderAttendance(){
+  var grid = document.getElementById('absensiGrid');
+  if(!grid) return;
+  if(!state.classes.length){
+    grid.innerHTML = '<div class="empty-state">Belum ada kelas. Tambah kelas dulu di menu "Kelas saya".</div>';
+    return;
+  }
+  var today = todayStr();
+  grid.innerHTML = state.classes.map(function(c){
+    var dates = state.attendance[c.id] || [];
+    var totalSesi = state.schedule.filter(function(s){ return s.classId === c.id; }).length || 1;
+    var pct = Math.min(100, Math.round((dates.length / Math.max(totalSesi, dates.length, 8)) * 100));
+    var doneToday = dates.indexOf(today) !== -1;
+    return '<div class="class-card">' +
+      '<h3>' + esc(c.name) + '</h3>' +
+      '<p class="sub" style="margin:2px 0 10px;">' + esc(c.dosen || '') + '</p>' +
+      '<div style="background:var(--lav); border-radius:8px; height:8px; overflow:hidden; margin-bottom:8px;">' +
+        '<div style="background:var(--mint-deep); height:100%; width:' + pct + '%;"></div></div>' +
+      '<p class="sub" style="margin-bottom:10px;">' + dates.length + ' kali hadir &middot; ' + pct + '%</p>' +
+      (doneToday
+        ? '<button class="btn-ghost" disabled style="width:100%; justify-content:center; opacity:.6;"><i class="ti ti-check"></i> Sudah absen hari ini</button>'
+        : '<button class="btn-primary" style="width:100%; justify-content:center;" onclick="checkIn(\'' + c.id + '\')"><i class="ti ti-clipboard-check"></i> Check-in hari ini</button>') +
+      '</div>';
+  }).join('');
+}
+
+/* ========================== NOTIFIKASI DEADLINE TUGAS ========================== */
+function checkDeadlineNotifications(){
+  if(!state.notifiedTaskIds) state.notifiedTaskIds = [];
+  var today = stripTime(new Date());
+  var dueSoon = state.tasks.filter(function(t){
+    if(t.done) return false;
+    var d = stripTime(new Date(t.deadline + 'T00:00:00'));
+    var diffDays = Math.round((d - today) / 86400000);
+    return diffDays >= 0 && diffDays <= 1;
+  });
+  dueSoon.forEach(function(t){
+    if(state.notifiedTaskIds.indexOf(t.id) !== -1) return;
+    state.notifiedTaskIds.push(t.id);
+    var cls = getClass(t.classId);
+    var msg = '"' + t.title + '"' + (cls ? ' (' + cls.name + ')' : '') + ' deadline-nya besok/hari ini!';
+    toast('⏰ ' + msg);
+    if(window.Notification && Notification.permission === 'granted'){
+      new Notification('Deadline tugas mendekat', {body: msg});
+    }
+  });
+  if(dueSoon.length) persistState();
+}
+function requestNotifPermission(){
+  if(window.Notification && Notification.permission === 'default'){
+    Notification.requestPermission();
+  }
+}
+
+/* ========================== TANYA AI ========================== */
+var pendingAiFile = null;
+function handleAiFileSelect(inputEl){
+  var file = inputEl.files && inputEl.files[0];
+  if(!file) return;
+  if(file.size > 4 * 1024 * 1024){
+    toast('File maksimal 4MB ya 🙏');
+    inputEl.value = '';
+    return;
+  }
+  var reader = new FileReader();
+  reader.onload = function(e){
+    pendingAiFile = {name:file.name, type:file.type, dataUrl:e.target.result};
+    var prev = document.getElementById('aiFilePreview');
+    prev.style.display = 'block';
+    prev.innerHTML = '<i class="ti ti-paperclip"></i> ' + esc(file.name) + ' <button class="icon-btn-sm" style="display:inline-flex; vertical-align:middle;" onclick="clearAiFile()"><i class="ti ti-x"></i></button>';
+  };
+  reader.readAsDataURL(file);
+}
+function clearAiFile(){
+  pendingAiFile = null;
+  document.getElementById('aiFileInput').value = '';
+  var prev = document.getElementById('aiFilePreview');
+  prev.style.display = 'none'; prev.innerHTML = '';
+}
+function aiCannedReply(text, hasFile){
+  var t = (text || '').toLowerCase();
+  if(hasFile && !text){
+    return 'Filenya udah aku terima 📎. Coba ceritain juga di chat: ini soal/materi apa, dan bagian mana yang bikin bingung? Biar bantuanku lebih tepat sasaran.';
+  }
+  if(hasFile){
+    return 'Oke, aku catat pertanyaanmu beserta file yang dilampirkan. Coba jelasin lebih detail bagian mana dari file itu yang mau dibahas (rumus, soal nomor berapa, paragraf mana, dll), nanti kita bedah bareng-bareng ya.';
+  }
+  if(t.indexOf('halo') !== -1 || t.indexOf('hai') !== -1){
+    return 'Halo! Aku di sini buat bantu kamu belajar. Mau tanya soal mata kuliah apa nih, atau ada tugas/materi yang mau dibahas?';
+  }
+  if(t.indexOf('terima kasih') !== -1 || t.indexOf('makasih') !== -1){
+    return 'Sama-sama! Semangat terus belajarnya 💪. Kalau ada pertanyaan lain, lampirin aja file atau tulis di sini.';
+  }
+  return 'Catatan diterima: "' + text + '". Coba pecah pertanyaannya jadi lebih spesifik (misal: konsepnya apa, contoh soalnya gimana, atau di mana letak bingungnya), biar diskusinya makin fokus. Kamu juga bisa lampirin file jpg/pdf/Word kalau soalnya ada di situ.\n\n(Mode simulasi — pasang API key di tombol "Atur API key" supaya jawabannya beneran dari AI.)';
+}
+
+/* ---- Koneksi ke AI ---- */
+/* ====================================================================
+   MODE PROXY (disarankan buat di-deploy/dibagikan ke publik/dosen):
+   Isi AI_PROXY_URL di bawah ini dengan URL server proxy kamu sendiri
+   (lihat folder "kampusin-ai-proxy" + panduan deploy-nya). Kalau diisi,
+   SEMUA pengunjung otomatis bisa pakai Tanya AI tanpa perlu API key
+   apapun — key-nya aman tersimpan di server, bukan di file ini.
+   Kalau dikosongin (''), app balik ke mode "bring your own key" biasa
+   (tiap pengunjung masukin API key-nya sendiri).
+   ==================================================================== */
+var AI_PROXY_URL = ''; // contoh: 'https://kampusin-ai-proxy.vercel.app/api/ai'
+
+/* ---- Mode bring-your-own-key (dipakai kalau AI_PROXY_URL kosong) ---- */
+/* sessionStorage sengaja dipakai (bukan localStorage): key otomatis hilang
+   begitu tab/browser ditutup, jadi lebih aman dipakai di link yang di-deploy
+   publik — tiap pengunjung masukin key-nya sendiri tiap sesi, gak nempel
+   permanen di komputer/link yang dibagikan. */
+var AI_PROVIDER_STORAGE = 'kampusin:aiProvider';
+var AI_KEY_STORAGE_CLAUDE = 'kampusin:claudeApiKey';
+var AI_KEY_STORAGE_GEMINI = 'kampusin:geminiApiKey';
+var CLAUDE_MODEL = 'claude-sonnet-4-6';
+var GEMINI_MODEL = 'gemini-2.5-flash';
+function isProxyMode(){
+  return !!(AI_PROXY_URL && AI_PROXY_URL.trim());
+}
+function getAiProvider(){
+  try{ return sessionStorage.getItem(AI_PROVIDER_STORAGE) || 'claude'; } catch(e){ return 'claude'; }
+}
+function setAiProvider(p){
+  try{ sessionStorage.setItem(AI_PROVIDER_STORAGE, p); } catch(e){}
+}
+function getAiKeyStorageName(provider){
+  return provider === 'gemini' ? AI_KEY_STORAGE_GEMINI : AI_KEY_STORAGE_CLAUDE;
+}
+function getAiApiKey(){
+  try{ return sessionStorage.getItem(getAiKeyStorageName(getAiProvider())) || ''; } catch(e){ return ''; }
+}
+function setAiApiKey(key){
+  try{ sessionStorage.setItem(getAiKeyStorageName(getAiProvider()), key); } catch(e){}
+}
+function clearAiApiKeyStored(){
+  try{ sessionStorage.removeItem(getAiKeyStorageName(getAiProvider())); } catch(e){}
+}
+function openAiSettingsModal(){
+  if(isProxyMode()){
+    var body =
+      '<p class="sub" style="line-height:1.6;"><i class="ti ti-plug-connected" style="color:var(--mint-deep);"></i> Tanya AI di app ini sudah otomatis tersambung lewat server bersama — kamu (dan siapapun yang buka link ini) <b>gak perlu masukin API key apapun</b>. Key-nya aman tersimpan di server, bukan di file ini.</p>' +
+      '<p class="sub" style="line-height:1.6;">Server proxy: <code>' + esc(AI_PROXY_URL) + '</code></p>';
+    openModal('Status koneksi AI', body, function(){ closeModal(); }, null);
+    return;
+  }
+  var provider = getAiProvider();
+  var current = getAiApiKey();
+  var body =
+    '<div class="field"><label>Pilih AI</label><select id="f-ai-provider" onchange="onAiProviderPick(this)">' +
+      '<option value="claude"' + (provider === 'claude' ? ' selected' : '') + '>Claude (Anthropic)</option>' +
+      '<option value="gemini"' + (provider === 'gemini' ? ' selected' : '') + '>Gemini (Google)</option>' +
+    '</select></div>' +
+    '<div class="field"><label id="f-ai-key-label">' + (provider === 'gemini' ? 'Gemini API key' : 'Anthropic API key') + '</label>' +
+    '<input id="f-ai-key" type="password" value="' + esc(current) + '" placeholder="' + (provider === 'gemini' ? 'AIza...' : 'sk-ant-...') + '"></div>' +
+    '<p class="sub" id="f-ai-key-hint" style="line-height:1.5;">' + aiProviderHint(provider) + '</p>';
+  openModal('Atur API key AI', body, function(){
+    var pickedProvider = document.getElementById('f-ai-provider').value;
+    setAiProvider(pickedProvider);
+    var val = document.getElementById('f-ai-key').value.trim();
+    if(!val){ clearAiApiKeyStored(); toast('API key dihapus, balik ke mode simulasi'); }
+    else { setAiApiKey(val); toast('API key tersimpan, Tanya AI sudah tersambung ke ' + (pickedProvider === 'gemini' ? 'Gemini' : 'Claude') + ' 🎉'); }
+    closeModal();
+    updateAiStatusBanner();
+  }, current ? function(){
+    clearAiApiKeyStored();
+    toast('API key dihapus');
+    closeModal();
+    updateAiStatusBanner();
+  } : null);
+}
+function aiProviderHint(provider){
+  if(provider === 'gemini'){
+    return 'Bikin key gratis di <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> (model Gemini Flash punya jatah gratis harian). Key cuma disimpan selama tab ini terbuka. Kalau link ini di-share, <b>tiap orang masukin key Gemini-nya sendiri</b>.';
+  }
+  return 'Bikin key di <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> (akun baru dapat kredit gratis untuk coba-coba). Key cuma disimpan selama tab ini terbuka. Kalau link ini di-share, <b>tiap orang masukin key Claude-nya sendiri</b>.';
+}
+function onAiProviderPick(sel){
+  var provider = sel.value;
+  document.getElementById('f-ai-key-label').textContent = provider === 'gemini' ? 'Gemini API key' : 'Anthropic API key';
+  document.getElementById('f-ai-key').placeholder = provider === 'gemini' ? 'AIza...' : 'sk-ant-...';
+  document.getElementById('f-ai-key-hint').innerHTML = aiProviderHint(provider);
+  /* tampilkan key yang udah kesimpen buat provider itu juga (kalau ada) */
+  try{ document.getElementById('f-ai-key').value = sessionStorage.getItem(getAiKeyStorageName(provider)) || ''; } catch(e){}
+}
+function updateAiStatusBanner(){
+  var el = document.getElementById('aiStatusBanner');
+  if(!el) return;
+  if(isProxyMode()){
+    el.style.display = 'block';
+    el.innerHTML = '<i class="ti ti-plug-connected"></i> Tanya AI aktif otomatis buat semua pengunjung (lewat server, gak perlu API key).';
+    return;
+  }
+  var provider = getAiProvider();
+  var providerLabel = provider === 'gemini' ? 'Gemini' : 'Claude';
+  if(getAiApiKey()){
+    el.style.display = 'block';
+    el.innerHTML = '<i class="ti ti-plug-connected"></i> Tersambung ke ' + providerLabel + ' API.';
+  } else {
+    el.style.display = 'block';
+    el.innerHTML = '<i class="ti ti-plug-connected-x"></i> Belum tersambung ke AI sungguhan (mode simulasi). Klik "Atur API key" di atas buat nyambungin.';
+  }
+}
+function fileToContentBlock(file){
+  if(!file) return null;
+  var base64 = (file.dataUrl || '').split(',')[1] || '';
+  if(file.type && (file.type.indexOf('image/') === 0 || file.type === 'application/pdf')){
+    return {mimeType: file.type, base64: base64};
+  }
+  /* Word (.doc/.docx) belum bisa dibaca langsung sebagai file oleh Claude maupun Gemini,
+     jadi cuma dikasih tau nama filenya lewat teks. */
+  return null;
+}
+function myAiKey(){
+  return (!isGuestMode && currentUser) ? (currentUser.uid || 'guest') : 'guest';
+}
+function myAiChats(){
+  if(!state.aiChats || Array.isArray(state.aiChats)) state.aiChats = {};
+  var k = myAiKey();
+  if(!state.aiChats[k]) state.aiChats[k] = [];
+  return state.aiChats[k];
+}
+function buildAiTurns(){
+  return myAiChats().filter(function(m){ return m.role === 'user' || m.role === 'ai'; }).map(function(m){
+    var fileBlock = fileToContentBlock(m.file);
+    var textNote = m.text || '';
+    if(m.file && !fileBlock){
+      textNote += (textNote ? '\n\n' : '') + '[File dilampirkan: ' + m.file.name + ' — format Word belum bisa dibaca otomatis, mohon jelaskan isinya di sini juga ya]';
+    }
+    return {isAi: m.role === 'ai', text: textNote || '(tidak ada teks)', fileBlock: fileBlock};
+  });
+}
+var AI_SYSTEM_PROMPT = 'Kamu adalah asisten belajar untuk mahasiswa di aplikasi kampus bernama Kampusin. Jawab dalam Bahasa Indonesia yang santai tapi jelas, fokus bantu mahasiswa memahami materi kuliah, mengerjakan tugas, dan menjawab pertanyaan akademik. Kalau ada file dilampirkan (gambar/PDF), bahas isinya secara konkret.';
+function buildGeminiContents(){
+  return buildAiTurns().map(function(t){
+    var parts = [];
+    if(t.fileBlock) parts.push({inline_data:{mime_type:t.fileBlock.mimeType, data:t.fileBlock.base64}});
+    parts.push({text:t.text});
+    return {role: t.isAi ? 'model' : 'user', parts: parts};
+  });
+}
+function callProxyApi(){
+  /* Mode proxy: gak butuh API key sama sekali di sisi browser, key-nya
+     aman di server. Format body sama kayak yang dipakai server proxy
+     (lihat kampusin-ai-proxy/api/ai.js). */
+  return fetch(AI_PROXY_URL, {
+    method: 'POST',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({
+      system_instruction: {parts:[{text: AI_SYSTEM_PROMPT}]},
+      contents: buildGeminiContents()
+    })
+  }).then(function(res){
+    return res.json().then(function(data){
+      if(!res.ok){
+        var msg = (data && data.error && data.error.message) ? data.error.message : ('HTTP ' + res.status);
+        throw new Error(msg);
+      }
+      return data;
+    });
+  }).then(function(data){
+    var cand = (data.candidates || [])[0];
+    var parts = cand && cand.content && cand.content.parts ? cand.content.parts : [];
+    var text = parts.map(function(p){ return p.text || ''; }).filter(Boolean).join('\n');
+    return text || '(AI tidak mengembalikan teks, coba lagi ya)';
+  });
+}
+function callClaudeApi(apiKey){
+  var messages = buildAiTurns().map(function(t){
+    var content = [];
+    if(t.fileBlock) content.push({type: t.fileBlock.mimeType === 'application/pdf' ? 'document' : 'image', source:{type:'base64', media_type:t.fileBlock.mimeType, data:t.fileBlock.base64}});
+    content.push({type:'text', text:t.text});
+    return {role: t.isAi ? 'assistant' : 'user', content: content};
+  });
+  return fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({ model: CLAUDE_MODEL, max_tokens: 1000, system: AI_SYSTEM_PROMPT, messages: messages })
+  }).then(function(res){
+    return res.json().then(function(data){
+      if(!res.ok){
+        var msg = (data && data.error && data.error.message) ? data.error.message : ('HTTP ' + res.status);
+        throw new Error(msg);
+      }
+      return data;
+    });
+  }).then(function(data){
+    var text = (data.content || []).map(function(b){ return b.type === 'text' ? b.text : ''; }).filter(Boolean).join('\n');
+    return text || '(AI tidak mengembalikan teks, coba lagi ya)';
+  });
+}
+function callGeminiApi(apiKey){
+  var contents = buildGeminiContents();
+  var url = 'https://generativelanguage.googleapis.com/v1beta/models/' + GEMINI_MODEL + ':generateContent';
+  return fetch(url, {
+    method: 'POST',
+    headers: {'content-type': 'application/json', 'x-goog-api-key': apiKey},
+    body: JSON.stringify({
+      system_instruction: {parts:[{text: AI_SYSTEM_PROMPT}]},
+      contents: contents
+    })
+  }).then(function(res){
+    return res.json().then(function(data){
+      if(!res.ok){
+        var msg = (data && data.error && data.error.message) ? data.error.message : ('HTTP ' + res.status);
+        throw new Error(msg);
+      }
+      return data;
+    });
+  }).then(function(data){
+    var cand = (data.candidates || [])[0];
+    var parts = cand && cand.content && cand.content.parts ? cand.content.parts : [];
+    var text = parts.map(function(p){ return p.text || ''; }).filter(Boolean).join('\n');
+    return text || '(AI tidak mengembalikan teks, coba lagi ya)';
+  });
+}
+function callAiApi(){
+  if(isProxyMode()) return callProxyApi();
+  var apiKey = getAiApiKey();
+  return getAiProvider() === 'gemini' ? callGeminiApi(apiKey) : callClaudeApi(apiKey);
+}
+function renderAiMessages(){
+  var el = document.getElementById('aiMessages');
+  if(!el) return;
+  updateAiStatusBanner();
+  var chats = myAiChats();
+  if(!chats.length){
+    el.innerHTML = '<div class="chat-empty"><i class="ti ti-sparkles" style="font-size:26px;"></i><div>Belum ada percakapan. Tanya apapun soal materi kuliahmu, atau lampirin file dulu (jpg, pdf, Word).</div></div>';
+    return;
+  }
+  el.innerHTML = chats.map(function(m){
+    if(m.role === 'typing'){
+      return '<div class="msg theirs" id="aiTypingBubble"><div class="sender">Asisten Belajar AI</div><i>sedang mengetik...</i></div>';
+    }
+    return '<div class="msg ' + (m.role === 'user' ? 'mine' : 'theirs') + '">' +
+      (m.role === 'ai' ? '<div class="sender">Asisten Belajar AI</div>' : '') +
+      (m.text ? esc(m.text).replace(/\n/g, '<br>') : '') +
+      renderAttachment(m.file) +
+      '<span class="time">' + esc(m.time) + '</span></div>';
+  }).join('');
+  el.scrollTop = el.scrollHeight;
+}
+function sendAiMessage(){
+  var input = document.getElementById('aiInput');
+  var text = input.value.trim();
+  if(!text && !pendingAiFile) return;
+  var file = pendingAiFile;
+  var chats = myAiChats();
+  chats.push({role:'user', text:text, file:file, time:nowTime()});
+  input.value = '';
+  clearAiFile();
+  renderAiMessages();
+  persistState();
+
+  var apiKey = getAiApiKey();
+  if(!apiKey && !isProxyMode()){
+    setTimeout(function(){
+      var reply = aiCannedReply(text, !!file);
+      myAiChats().push({role:'ai', text:reply, file:null, time:nowTime()});
+      renderAiMessages();
+      persistState();
+    }, 500);
+    return;
+  }
+
+  myAiChats().push({role:'typing', text:'', file:null, time:''});
+  renderAiMessages();
+  callAiApi().then(function(reply){
+    var c = myAiChats();
+    c.pop(); /* buang bubble "sedang mengetik" */
+    c.push({role:'ai', text:reply, file:null, time:nowTime()});
+    renderAiMessages();
+    persistState();
+  }).catch(function(err){
+    var c = myAiChats();
+    c.pop();
+    var msg = 'Gagal menghubungi AI: ' + err.message + '. Cek lagi API key-nya di "Atur API key".';
+    c.push({role:'ai', text:msg, file:null, time:nowTime()});
+    renderAiMessages();
+    persistState();
+    toast('⚠️ ' + err.message);
+  });
+}
+document.getElementById('aiInput').addEventListener('keydown', function(e){
+  if(e.key === 'Enter'){ e.preventDefault(); sendAiMessage(); }
+});
+
+/* ========================== NOTIFIKASI REAL-TIME ========================== */
+function pushNotification(title, body, type, view){
+  if(!state.notifications) state.notifications = [];
+  state.notifications.unshift({id:uid('n'), title:title, body:body, time:nowTime(), read:false, type:type||'info', view:view||''});
+  if(state.notifications.length > 50) state.notifications = state.notifications.slice(0,50);
+  persistState();
+  updateNotifBadge();
+  toast('🔔 ' + title);
+  if(window.Notification && Notification.permission === 'granted'){
+    new Notification(title, {body:body});
+  }
+}
+function updateNotifBadge(){
+  var badge = document.getElementById('notifBadge');
+  if(!badge) return;
+  var unread = (state.notifications||[]).filter(function(n){ return !n.read; }).length;
+  if(unread > 0){
+    badge.style.display = 'flex';
+    badge.textContent = unread > 9 ? '9+' : unread;
+  } else {
+    badge.style.display = 'none';
+  }
+}
+var notifPanelOpen = false;
+function toggleNotifPanel(){
+  var panel = document.getElementById('notifPanel');
+  if(!panel) return;
+  notifPanelOpen = !notifPanelOpen;
+  if(notifPanelOpen){
+    renderNotifPanel();
+    panel.style.display = 'block';
+  } else {
+    panel.style.display = 'none';
+  }
+}
+document.addEventListener('click', function(e){
+  var panel = document.getElementById('notifPanel');
+  if(!panel || !notifPanelOpen) return;
+  var bell = panel.parentElement;
+  if(!bell.contains(e.target)){ panel.style.display='none'; notifPanelOpen=false; }
+});
+function navigateTo(view){
+  document.querySelectorAll('.navitem').forEach(function(n){ n.classList.remove('active'); });
+  var navMatch = document.querySelector('.navitem[data-view="' + view + '"]');
+  if(navMatch) navMatch.classList.add('active');
+  document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+  var el = document.getElementById('view-' + view);
+  if(el) el.classList.add('active');
+  window.scrollTo(0,0);
+  var panel = document.getElementById('notifPanel');
+  if(panel){ panel.style.display='none'; notifPanelOpen=false; }
+}
+function renderNotifPanel(){
+  var panel = document.getElementById('notifPanel');
+  if(!panel) return;
+  var notifs = (state.notifications||[]).slice().reverse();
+  var typeIcon = {info:'🔵', success:'✅', warn:'⚠️', deadline:'⏰'};
+  var typeView = {info:'', success:'tugas', warn:'tugas', deadline:'tugas'};
+  /* mark all read */
+  (state.notifications||[]).forEach(function(n){ n.read = true; });
+  persistState();
+  updateNotifBadge();
+  if(!notifs.length){
+    panel.innerHTML = '<div style="text-align:center; padding:18px; color:var(--ink-soft); font-size:13px;">Belum ada notifikasi 🔕</div>';
+    return;
+  }
+  panel.innerHTML =
+    '<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid var(--lav);">' +
+      '<span style="font-weight:700; font-size:13px;">Notifikasi</span>' +
+      '<button class="btn-label-sm delete" style="padding:2px 8px; font-size:11px;" onclick="clearAllNotifs()">Hapus semua</button>' +
+    '</div>' +
+    notifs.slice(0,20).map(function(n, i){
+      var view = n.view || typeView[n.type] || '';
+      var clickable = view ? 'cursor:pointer;' : '';
+      var onclick = view ? 'onclick="navigateTo(\'' + view + '\')"' : '';
+      return '<div ' + onclick + ' style="padding:9px 8px; border-radius:10px; margin-bottom:4px; background:var(--lav); ' + clickable + '">' +
+        '<div style="font-weight:600; font-size:13px;">' + (typeIcon[n.type]||'🔔') + ' ' + esc(n.title) + (view ? ' <span style="font-size:10px; opacity:.6;">→ klik</span>' : '') + '</div>' +
+        '<div style="font-size:12px; color:var(--ink-soft); margin-top:2px;">' + esc(n.body) + '</div>' +
+        '<div style="font-size:11px; color:var(--ink-soft); margin-top:3px;">' + esc(n.time) + '</div>' +
+      '</div>';
+    }).join('') +
+    (notifs.length > 20 ? '<div style="text-align:center;font-size:12px;color:var(--ink-soft);padding:6px;">+' + (notifs.length-20) + ' notifikasi lain</div>' : '');
+}
+function clearAllNotifs(){
+  state.notifications = [];
+  persistState();
+  updateNotifBadge();
+  renderNotifPanel();
+}
+
+/* ========================== EDIT PROFIL ========================== */
+function openProfileModal(){
+  var p = state.profile || {};
+  var body =
+    '<div class="field"><label>Foto profil (opsional)</label><input id="f-photo-file" type="file" accept=".jpg,.jpeg,.png" onchange="previewPhotoInput(this)"><div id="f-photo-preview" style="margin-top:8px;">' +
+      (p.photo ? '<img src="' + p.photo + '" style="width:56px; height:56px; border-radius:50%; object-fit:cover;">' : '') +
+    '</div></div>' +
+    '<div class="field"><label>Bio</label><input id="f-bio" value="' + esc(p.bio||'') + '" placeholder="Ceritain sedikit tentang kamu..."></div>' +
+    '<div class="field"><label>Program studi</label><input id="f-prodi" value="' + esc(p.prodi||'') + '" placeholder="cth. Sistem Informasi"></div>' +
+    '<div class="field"><label>Semester</label><input id="f-semester" type="number" min="1" max="14" value="' + (p.semester||1) + '"></div>' +
+    '<div class="field"><label>Nomor HP</label><input id="f-phone" value="' + esc(p.phone||'') + '" placeholder="08xxxxxxxxxx"></div>';
+  openModal('Edit profil', body, function(){ saveProfile(); }, null);
+}
+function previewPhotoInput(inputEl){
+  var file = inputEl.files && inputEl.files[0];
+  if(!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e){
+    document.getElementById('f-photo-preview').innerHTML = '<img src="' + e.target.result + '" style="width:56px; height:56px; border-radius:50%; object-fit:cover;">';
+    document.getElementById('f-photo-preview').dataset.dataUrl = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function saveProfile(){
+  if(!state.profile) state.profile = {};
+  var photoInput = document.getElementById('f-photo-file');
+  var preview = document.getElementById('f-photo-preview');
+  var newPhoto = preview && preview.dataset.dataUrl ? preview.dataset.dataUrl : state.profile.photo;
+  state.profile.photo   = newPhoto || '';
+  state.profile.bio     = document.getElementById('f-bio').value.trim();
+  state.profile.prodi   = document.getElementById('f-prodi').value.trim();
+  state.profile.semester= parseInt(document.getElementById('f-semester').value) || 1;
+  state.profile.phone   = document.getElementById('f-phone').value.trim();
+  toast('Profil tersimpan ✅');
+  persistState();
+  closeModal();
+  renderProfileSidebar();
+}
+function renderProfileSidebar(){
+  var p = state.profile || {};
+  var name = '';
+  if(!window.isGuestMode && window.currentUser){
+    name = (currentUser.displayName || currentUser.email.split('@')[0]);
+  } else {
+    name = 'Suka hati';
+  }
+  var avatarEl = document.getElementById('profileAvatar');
+  var nameEl = document.getElementById('profileName');
+  var roleEl = document.getElementById('profileRole');
+  if(p.photo && avatarEl){
+    avatarEl.innerHTML = '<img src="' + p.photo + '" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">';
+  } else if(avatarEl){
+    avatarEl.innerHTML = esc(initials(name));
+  }
+  if(nameEl) nameEl.textContent = name;
+  if(roleEl) roleEl.textContent = (p.prodi||'Informatika') + ' · Smt ' + (p.semester||1);
+}
+
+/* ========================== NILAI & IPK ========================== */
+function gradeLetterToPoint(letter){
+  return {A:4, B:3, C:2, D:1, E:0}[letter] || 0;
+}
+function pointToLetter(p){
+  if(p >= 3.5) return 'A';
+  if(p >= 2.75) return 'B';
+  if(p >= 2.0) return 'C';
+  if(p >= 1.0) return 'D';
+  return 'E';
+}
+function openGradeModal(classId){
+  var cls = getClass(classId);
+  var g = (state.grades[classId] || {});
+  var body =
+    '<div class="field"><label>Mata kuliah</label><input value="' + esc(cls ? cls.name : '') + '" disabled></div>' +
+    '<div class="field"><label>Nilai tugas (0-100)</label><input id="f-g-tugas" type="number" min="0" max="100" value="' + (g.tugas!=null?g.tugas:'') + '"></div>' +
+    '<div class="field"><label>Nilai UTS (0-100)</label><input id="f-g-uts" type="number" min="0" max="100" value="' + (g.uts!=null?g.uts:'') + '"></div>' +
+    '<div class="field"><label>Nilai UAS (0-100)</label><input id="f-g-uas" type="number" min="0" max="100" value="' + (g.uas!=null?g.uas:'') + '"></div>';
+  openModal('Input nilai – ' + (cls?cls.name:''), body, function(){ saveGrade(classId); }, null);
+}
+function saveGrade(classId){
+  var tugas = parseFloat(document.getElementById('f-g-tugas').value);
+  var uts   = parseFloat(document.getElementById('f-g-uts').value);
+  var uas   = parseFloat(document.getElementById('f-g-uas').value);
+  if([tugas,uts,uas].some(function(v){ return isNaN(v)||v<0||v>100; })){
+    toast('Semua nilai harus angka 0-100'); return;
+  }
+  if(!state.grades) state.grades = {};
+  var akhir = Math.round(tugas*0.3 + uts*0.35 + uas*0.35);
+  state.grades[classId] = {tugas:tugas, uts:uts, uas:uas, akhir:akhir};
+  toast('Nilai disimpan');
+  persistState();
+  closeModal();
+  renderNilai();
+  renderKRS();
+}
+function renderNilai(){
+  var grid = document.getElementById('gradesGrid');
+  var ipkTitle = document.getElementById('ipkTitle');
+  var ipkSub = document.getElementById('ipkSub');
+  var ipkRing = document.getElementById('ipkRing');
+  if(!grid) return;
+  var krsKelas = (state.krsSelected||[]).map(function(id){ return getClass(id); }).filter(Boolean);
+  if(!krsKelas.length){
+    grid.innerHTML = '<div class="empty-state">Belum ada mata kuliah di KRS.</div>';
+    return;
+  }
+  var totalBobot = 0, totalSks = 0, hasAny = false;
+  krsKelas.forEach(function(c){
+    var g = state.grades && state.grades[c.id];
+    if(g){ var letter = pointToLetter(g.akhir/25); totalBobot += gradeLetterToPoint(letter)*(c.sks||3); totalSks += (c.sks||3); hasAny = true; }
+  });
+  var ipk = totalSks ? (totalBobot/totalSks) : 0;
+  if(ipkTitle) ipkTitle.textContent = 'IPK semester ini: ' + ipk.toFixed(2);
+  if(ipkSub) ipkSub.textContent = hasAny ? ('Dari ' + krsKelas.filter(function(c){ return state.grades&&state.grades[c.id]; }).length + ' dari ' + krsKelas.length + ' mata kuliah yang sudah ada nilai') : 'Belum ada nilai yang diisi.';
+  if(ipkRing) ipkRing.textContent = ipk.toFixed(1) + (ipk >= 3.5 ? '🌟' : ipk >= 3.0 ? '😊' : ipk >= 2.0 ? '💪' : '📚');
+  grid.innerHTML = krsKelas.map(function(c){
+    var g = state.grades && state.grades[c.id];
+    var akhir = g ? g.akhir : null;
+    var letter = akhir != null ? pointToLetter(akhir/25) : '-';
+    return '<div class="class-card">' +
+      '<h3>' + esc(c.name) + '</h3>' +
+      '<p class="sub">' + esc(c.dosen||'') + ' &middot; ' + (c.sks||3) + ' SKS</p>' +
+      (g ? '<div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin:10px 0;">' +
+        '<div style="text-align:center; padding:8px; background:var(--lav); border-radius:10px;"><div style="font-size:11px; color:var(--ink-soft);">Tugas</div><div style="font-weight:700;">' + g.tugas + '</div></div>' +
+        '<div style="text-align:center; padding:8px; background:var(--lav); border-radius:10px;"><div style="font-size:11px; color:var(--ink-soft);">UTS</div><div style="font-weight:700;">' + g.uts + '</div></div>' +
+        '<div style="text-align:center; padding:8px; background:var(--lav); border-radius:10px;"><div style="font-size:11px; color:var(--ink-soft);">UAS</div><div style="font-weight:700;">' + g.uas + '</div></div>' +
+        '</div><div style="text-align:center; padding:10px; border-radius:12px; background:var(--purple-deep); color:#fff; font-size:22px; font-weight:900; margin-bottom:10px;">' + letter + ' <span style="font-size:14px;">(' + akhir + ')</span></div>' : '') +
+      '<button class="btn-primary" style="width:100%; justify-content:center;" onclick="openGradeModal(\'' + c.id + '\')">' +
+        (g ? '<i class="ti ti-pencil"></i> Edit nilai' : '<i class="ti ti-plus"></i> Input nilai') +
+      '</button></div>';
+  }).join('');
+}
+
+/* ========================== KRS & KHS ========================== */
+function renderKRS(){
+  var list = document.getElementById('krsList');
+  var khsBody = document.getElementById('khsBody');
+  if(!list || !khsBody) return;
+  list.innerHTML = state.classes.map(function(c){
+    var selected = (state.krsSelected||[]).indexOf(c.id) !== -1;
+    return '<label style="display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:12px; background:var(--card); margin-bottom:8px; cursor:pointer; box-shadow:var(--shadow-soft);">' +
+      '<input type="checkbox" ' + (selected?'checked':'') + ' onchange="toggleKrs(\'' + c.id + '\', this.checked)" style="width:16px; height:16px; accent-color:var(--purple-deep);">' +
+      '<div style="flex:1;"><div style="font-weight:600;">' + esc(c.name) + '</div>' +
+      '<div class="sub" style="font-size:12px;">' + esc(c.dosen||'') + ' &middot; ' + (c.sks||3) + ' SKS</div></div>' +
+      '</label>';
+  }).join('');
+  var total = (state.krsSelected||[]).reduce(function(s,id){ var c=getClass(id); return s+(c?c.sks||3:0); },0);
+  list.innerHTML += '<div style="font-weight:700; margin-top:6px; font-size:13px;">Total: <span style="color:var(--purple-deep);">' + total + ' SKS</span></div>';
+  var krsKelas = (state.krsSelected||[]).map(function(id){ return getClass(id); }).filter(Boolean);
+  khsBody.innerHTML = krsKelas.map(function(c){
+    var g = state.grades && state.grades[c.id];
+    var akhir = g ? g.akhir : null;
+    var letter = akhir != null ? pointToLetter(akhir/25) : '-';
+    return '<tr><td>' + esc(c.name) + '</td><td>' + (c.sks||3) + '</td><td>' + (akhir!=null?akhir:'-') + '</td><td style="font-weight:700; color:var(--purple-deep);">' + letter + '</td></tr>';
+  }).join('');
+  if(!krsKelas.length) khsBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--ink-soft); padding:1rem;">Belum ada kelas di KRS.</td></tr>';
+}
+function toggleKrs(classId, checked){
+  if(!state.krsSelected) state.krsSelected = [];
+  if(checked){
+    if(state.krsSelected.indexOf(classId)===-1) state.krsSelected.push(classId);
+  } else {
+    state.krsSelected = state.krsSelected.filter(function(id){ return id!==classId; });
+  }
+  persistState();
+  renderKRS();
+  renderNilai();
+}
+
+/* ========================== MATERI PERKULIAHAN ========================== */
+function renderMateriClassOptions(){
+  var sel = document.getElementById('materiClassSelect');
+  if(!sel) return;
+  sel.innerHTML = state.classes.map(function(c){
+    return '<option value="' + c.id + '">' + esc(c.name) + '</option>';
+  }).join('');
+}
+function renderMateri(){
+  var sel = document.getElementById('materiClassSelect');
+  var classId = sel ? sel.value : (state.classes[0] ? state.classes[0].id : '');
+  var list = document.getElementById('materiList');
+  if(!list) return;
+  if(!state.materials) state.materials = {};
+  var items = state.materials[classId] || [];
+  if(!items.length){
+    list.innerHTML = '<div class="empty-state">Belum ada materi untuk mata kuliah ini. Klik "Upload materi" untuk menambah.</div>';
+    return;
+  }
+  list.innerHTML = items.map(function(m, idx){
+    var isImg = m.type && m.type.indexOf('image/') === 0;
+    return '<div class="task-row" style="gap:14px;">' +
+      (isImg ? '<img src="' + m.dataUrl + '" style="width:48px; height:48px; border-radius:10px; object-fit:cover;">' :
+        '<div style="width:48px; height:48px; border-radius:10px; background:var(--lav); display:flex; align-items:center; justify-content:center; font-size:22px;">' + fileEmoji(m.name) + '</div>') +
+      '<div class="info"><div class="t">' + esc(m.name) + '</div><div class="m">' + esc(m.time || '') + '</div></div>' +
+      '<div class="row-actions-labeled">' +
+        '<a href="' + m.dataUrl + '" download="' + esc(m.name) + '" class="btn-label-sm edit"><i class="ti ti-download"></i> Unduh</a>' +
+        '<button class="btn-label-sm delete" onclick="deleteMateri(\'' + classId + '\',' + idx + ')"><i class="ti ti-trash"></i> Hapus</button>' +
+      '</div></div>';
+  }).join('');
+}
+function fileEmoji(name){
+  var n = (name||'').toLowerCase();
+  if(n.endsWith('.pdf')) return '📄';
+  if(n.endsWith('.ppt')||n.endsWith('.pptx')) return '📊';
+  if(n.endsWith('.doc')||n.endsWith('.docx')) return '📝';
+  return '📎';
+}
+function handleMateriFileSelect(inputEl){
+  var file = inputEl.files && inputEl.files[0];
+  if(!file) return;
+  if(file.size > 6 * 1024 * 1024){ toast('File maksimal 6MB ya 🙏'); inputEl.value=''; return; }
+  var sel = document.getElementById('materiClassSelect');
+  var classId = sel ? sel.value : (state.classes[0] ? state.classes[0].id : '');
+  if(!classId){ toast('Pilih mata kuliah dulu'); return; }
+  var reader = new FileReader();
+  reader.onload = function(e){
+    if(!state.materials) state.materials = {};
+    if(!state.materials[classId]) state.materials[classId] = [];
+    state.materials[classId].push({name:file.name, type:file.type, dataUrl:e.target.result, time:nowTime()});
+    toast('Materi "' + file.name + '" berhasil diupload 📚');
+    markActivity();
+    persistState();
+    renderMateri();
+    pushNotification('Materi baru', '"' + file.name + '" ditambahkan ke ' + (getClass(classId)?getClass(classId).name:'kelas') + '.', 'info', 'materi');
+    inputEl.value = '';
+  };
+  reader.readAsDataURL(file);
+}
+function deleteMateri(classId, idx){
+  if(!confirm('Hapus materi ini?')) return;
+  state.materials[classId].splice(idx,1);
+  toast('Materi dihapus');
+  persistState();
+  renderMateri();
+}
+
+/* ========================== ZOOM / MEETING ========================== */
+var activeZoomSession = null;
+var pendingZoomFile = null;
+function openZoomSessionModal(){
+  var classOptions = state.classes.map(function(c){
+    return '<option value="' + c.id + '">' + esc(c.name) + '</option>';
+  }).join('');
+  var body =
+    '<div class="field"><label>Mata kuliah / topik</label><select id="f-zoom-class">' + classOptions + '</select></div>' +
+    '<div class="field"><label>Judul meeting</label><input id="f-zoom-title" placeholder="cth. Kuliah Online APL minggu 5"></div>' +
+    '<div class="field"><label>Link Zoom (opsional)</label><input id="f-zoom-link" placeholder="https://zoom.us/j/..."></div>' +
+    '<div class="field"><label>Jadwal</label><input id="f-zoom-date" type="datetime-local"></div>';
+  openModal('Buat sesi meeting', body, function(){ saveZoomSession(); }, null);
+}
+function saveZoomSession(){
+  var classId = document.getElementById('f-zoom-class').value;
+  var title   = document.getElementById('f-zoom-title').value.trim();
+  var link    = document.getElementById('f-zoom-link').value.trim();
+  var date    = document.getElementById('f-zoom-date').value;
+  if(!title){ toast('Judul meeting wajib diisi'); return; }
+  if(!state.zoomSessions) state.zoomSessions = [];
+  var sess = {id:uid('zm'), classId:classId, title:title, link:link, date:date, created:nowTime(), chats:[]};
+  state.zoomSessions.push(sess);
+  markActivity();
+  persistState();
+  closeModal();
+  renderZoomSessions();
+  selectZoomSession(sess.id);
+  pushNotification('Meeting dibuat', '"' + title + '" — ' + (link ? 'link tersedia' : 'belum ada link Zoom'), 'info', 'zoom');
+}
+function renderZoomSessions(){
+  var list = document.getElementById('zoomSessionList');
+  if(!list) return;
+  var sessions = (state.zoomSessions||[]).slice().reverse();
+  if(!sessions.length){
+    list.innerHTML = '<div style="padding:12px; color:var(--ink-soft); font-size:13px;">Belum ada meeting.<br>Klik "+ Buat meeting" di atas.</div>';
+    return;
+  }
+  list.innerHTML = sessions.map(function(s){
+    var cls = getClass(s.classId);
+    var active = activeZoomSession && activeZoomSession.id === s.id;
+    return '<div class="chat-group-item' + (active?' active':'') + '">' +
+      '<div onclick="selectZoomSession(\'' + s.id + '\')" style="flex:1; cursor:pointer;">' +
+        '<div class="cgi-name">' + esc(s.title) + '</div>' +
+        '<div class="cgi-preview">' + esc(cls?cls.name:'') + (s.date ? ' · ' + s.date.replace('T',' ').slice(0,16) : '') + ' · ' + (s.chats||[]).length + ' pesan</div>' +
+      '</div>' +
+      '<div style="display:flex; gap:4px; flex-shrink:0;">' +
+        (s.link ? '<button class="icon-btn-sm" title="Copy link Zoom" onclick="copyZoomLink(\'' + s.id + '\')"><i class="ti ti-copy"></i></button>' : '') +
+        '<button class="icon-btn-sm" title="Hapus meeting" style="color:var(--pink-deep);" onclick="deleteZoomSession(\'' + s.id + '\')"><i class="ti ti-trash"></i></button>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+function copyZoomLink(id){
+  var s = (state.zoomSessions||[]).filter(function(x){ return x.id===id; })[0];
+  if(!s || !s.link) return;
+  navigator.clipboard.writeText(s.link).then(function(){
+    toast('Link Zoom berhasil dicopy 📋');
+  }).catch(function(){
+    prompt('Copy link ini:', s.link);
+  });
+}
+function deleteZoomSession(id){
+  if(!confirm('Hapus sesi meeting ini?')) return;
+  if(activeCall && activeCall.sessionId === id) endVideoCall();
+  state.zoomSessions = (state.zoomSessions||[]).filter(function(s){ return s.id!==id; });
+  if(activeZoomSession && activeZoomSession.id === id){
+    activeZoomSession = null;
+    var bar = document.getElementById('zoomInputBar');
+    if(bar) bar.style.display='none';
+    var header = document.getElementById('zoomChatHeader');
+    if(header) header.style.display='none';
+    renderZoomChat();
+  }
+  persistState();
+  renderZoomSessions();
+  toast('Sesi meeting dihapus');
+}
+function selectZoomSession(id){
+  if(activeCall && activeCall.sessionId !== id) endVideoCall();
+  activeZoomSession = (state.zoomSessions||[]).filter(function(s){ return s.id===id; })[0];
+  renderZoomSessions();
+  renderZoomChat();
+  var bar = document.getElementById('zoomInputBar');
+  if(bar) bar.style.display = 'flex';
+  var header = document.getElementById('zoomChatHeader');
+  if(header && activeZoomSession){
+    header.style.display = 'flex';
+    document.getElementById('zoomChatTitle').textContent = activeZoomSession.title;
+    var cls = getClass(activeZoomSession.classId);
+    var meta = (cls ? cls.name : '') + (activeZoomSession.date ? ' · ' + activeZoomSession.date.replace('T',' ').slice(0,16) : '');
+    document.getElementById('zoomChatMeta').innerHTML = esc(meta) +
+      (activeZoomSession.link
+        ? ' · <a href="' + esc(activeZoomSession.link) + '" target="_blank" rel="noopener" style="color:var(--purple-deep);font-weight:700;"><i class="ti ti-video"></i> Join Zoom</a>'
+        : ' · <span style="color:var(--ink-soft);">Belum ada link Zoom</span>');
+    var callBtn = document.getElementById('zoomCallBtn');
+    if(callBtn){
+      var canCall = firebaseReady && !isGuestMode;
+      callBtn.disabled = !canCall;
+      callBtn.title = canCall ? 'Mulai video call langsung (kamera & mic asli)' : 'Login dengan akun (bukan mode tamu) untuk pakai video call';
+    }
+  }
+}
+function renderZoomChat(){
+  var el = document.getElementById('zoomMessages');
+  if(!el) return;
+  if(!activeZoomSession){
+    el.innerHTML = '<div class="chat-empty"><i class="ti ti-video" style="font-size:26px;"></i><div>Pilih sesi meeting di kiri, atau buat meeting baru.</div></div>';
+    return;
+  }
+  var msgs = activeZoomSession.chats || [];
+  var myUid = (!isGuestMode && currentUser) ? currentUser.uid : 'guest';
+  if(!msgs.length){
+    el.innerHTML = '<div class="chat-empty"><i class="ti ti-message-2" style="font-size:22px;"></i><div>Belum ada pesan di meeting ini.</div></div>';
+    return;
+  }
+  el.innerHTML = msgs.map(function(m, idx){
+    var isMine = m.senderUid === myUid;
+    var delBtn = isMine ? '<button class="msg-act-btn" onclick="deleteZoomMsg(' + idx + ')" title="Hapus"><i class="ti ti-trash"></i></button>' : '';
+    return '<div class="msg ' + (isMine?'mine':'theirs') + '">' +
+      (!isMine ? '<div class="sender">' + esc(m.sender||'Anonim') + '</div>' : '') +
+      (m.text ? esc(m.text).replace(/\n/g,'<br>') : '') +
+      renderAttachment(m.file) +
+      '<span class="time">' + esc(m.time) + '</span>' +
+      (isMine ? '<div class="msg-actions">' + delBtn + '</div>' : '') +
+    '</div>';
+  }).join('');
+  el.scrollTop = el.scrollHeight;
+}
+function deleteZoomMsg(idx){
+  if(!activeZoomSession || !activeZoomSession.chats) return;
+  activeZoomSession.chats.splice(idx,1);
+  persistState();
+  renderZoomChat(); renderZoomSessions();
+}
+function handleZoomFileSelect(inputEl){
+  var file = inputEl.files && inputEl.files[0];
+  if(!file) return;
+  if(file.size > 5*1024*1024){ toast('File maksimal 5MB'); inputEl.value=''; return; }
+  var reader = new FileReader();
+  reader.onload = function(e){
+    pendingZoomFile = {name:file.name, type:file.type, dataUrl:e.target.result};
+    var prev = document.getElementById('zoomFilePreview');
+    prev.style.display = 'block';
+    prev.innerHTML = '<i class="ti ti-paperclip"></i> ' + esc(file.name) +
+      ' <button class="icon-btn-sm" style="display:inline-flex;vertical-align:middle;" onclick="clearZoomFile()"><i class="ti ti-x"></i></button>';
+  };
+  reader.readAsDataURL(file);
+}
+function clearZoomFile(){
+  pendingZoomFile = null;
+  document.getElementById('zoomFileInput').value = '';
+  var p = document.getElementById('zoomFilePreview');
+  p.style.display = 'none'; p.innerHTML = '';
+}
+function sendZoomMessage(){
+  if(!activeZoomSession) return;
+  var input = document.getElementById('zoomInput');
+  var text = input.value.trim();
+  if(!text && !pendingZoomFile) return;
+  var myUid = (!isGuestMode && currentUser) ? currentUser.uid : 'guest';
+  var myName = (!isGuestMode && currentUser) ? (currentUser.displayName||currentUser.email.split('@')[0]) : 'Tamu';
+  var file = pendingZoomFile;
+  if(!activeZoomSession.chats) activeZoomSession.chats = [];
+  activeZoomSession.chats.push({senderUid:myUid, sender:myName, text:text, file:file, time:nowTime()});
+  input.value = ''; clearZoomFile();
+  persistState();
+  renderZoomChat(); renderZoomSessions();
+}
+document.addEventListener('keydown', function(e){
+  if(e.target && e.target.id === 'zoomInput' && e.key === 'Enter'){
+    e.preventDefault(); sendZoomMessage();
+  }
+});
+
+/* ========================== VIDEO CALL (WebRTC BENERAN) ==========================
+   Panggilan video 1-lawan-1 nyata: pakai kamera & mikrofon asli (getUserMedia)
+   + koneksi peer-to-peer langsung (RTCPeerConnection) antar browser.
+   Firestore dipakai cuma sebagai "meja rias" buat tukeran sinyal (offer/answer/ICE),
+   video & audio-nya sendiri jalan langsung peer-to-peer, bukan lewat server. */
+var RTC_ICE_SERVERS = { iceServers: [
+  { urls: 'stun:stun.l.google.com:19302' },
+  { urls: 'stun:stun1.l.google.com:19302' }
+]};
+var activeCall = null; /* {sessionId, pc, localStream, callDocRef, unsubCallDoc, unsubCandidates, role} */
+
+function callDocRefFor(sessionId){
+  return fbDb.collection('videoCalls').doc(sessionId);
+}
+function setCallStatus(text){
+  var el = document.getElementById('callStatus');
+  if(el) el.textContent = text;
+}
+async function startVideoCall(){
+  if(!activeZoomSession){ toast('Pilih atau buat sesi meeting dulu'); return; }
+  if(isGuestMode || !firebaseReady){ toast('Video call butuh login akun (bukan mode tamu) supaya bisa connect ke lawan bicara'); return; }
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    toast('Browser ini tidak mendukung akses kamera/mic'); return;
+  }
+  if(activeCall){ toast('Kamu sudah di dalam video call'); return; }
+
+  var sessionId = activeZoomSession.id;
+  var overlay = document.getElementById('callOverlay');
+  document.getElementById('callTitle').textContent = activeZoomSession.title || 'Video Call';
+  document.getElementById('callRemotePlaceholder').style.display = 'flex';
+  setCallStatus('Meminta izin kamera & mikrofon...');
+  document.getElementById('callMicIcon').className = 'ti ti-microphone';
+  document.getElementById('callCamIcon').className = 'ti ti-camera';
+  document.getElementById('callMicBtn').classList.remove('off');
+  document.getElementById('callCamBtn').classList.remove('off');
+  overlay.classList.add('active');
+
+  var localStream;
+  try{
+    localStream = await navigator.mediaDevices.getUserMedia({ video:true, audio:true });
+  } catch(err){
+    console.error(err);
+    toast('Gagal akses kamera/mic: izin ditolak atau tidak tersedia');
+    overlay.classList.remove('active');
+    return;
+  }
+  var localVideo = document.getElementById('callLocalVideo');
+  localVideo.srcObject = localStream;
+
+  var pc = new RTCPeerConnection(RTC_ICE_SERVERS);
+  localStream.getTracks().forEach(function(track){ pc.addTrack(track, localStream); });
+
+  var remoteVideo = document.getElementById('callRemoteVideo');
+  var remoteStream = new MediaStream();
+  remoteVideo.srcObject = remoteStream;
+  pc.ontrack = function(event){
+    event.streams[0].getTracks().forEach(function(track){ remoteStream.addTrack(track); });
+    document.getElementById('callRemotePlaceholder').style.display = 'none';
+    setCallStatus('Tersambung');
+  };
+  pc.onconnectionstatechange = function(){
+    if(!activeCall) return;
+    if(pc.connectionState === 'connecting') setCallStatus('Menyambungkan peer...');
+    if(pc.connectionState === 'connected') setCallStatus('Tersambung');
+    if(pc.connectionState === 'disconnected' || pc.connectionState === 'failed'){
+      setCallStatus('Koneksi terputus');
+    }
+  };
+
+  activeCall = { sessionId:sessionId, pc:pc, localStream:localStream, role:null, unsubCallDoc:null, unsubCandidates:[] };
+
+  var callDoc = callDocRefFor(sessionId);
+  var offerCandidates = callDoc.collection('offerCandidates');
+  var answerCandidates = callDoc.collection('answerCandidates');
+
+  try{
+    var snap = await callDoc.get();
+    if(!snap.exists || !snap.data() || !snap.data().offer || snap.data().ended){
+      /* Belum ada yang mulai call di sesi ini -> jadi PEMANGGIL (bikin offer) */
+      activeCall.role = 'caller';
+      setCallStatus('Menunggu peserta lain gabung...');
+      pc.onicecandidate = function(event){
+        if(event.candidate) offerCandidates.add(event.candidate.toJSON());
+      };
+      var offerDesc = await pc.createOffer();
+      await pc.setLocalDescription(offerDesc);
+      await callDoc.set({ offer:{ type:offerDesc.type, sdp:offerDesc.sdp }, ended:false, updatedAt:Date.now() });
+
+      activeCall.unsubCallDoc = callDoc.onSnapshot(function(docSnap){
+        var data = docSnap.data();
+        if(data && data.answer && !pc.currentRemoteDescription){
+          pc.setRemoteDescription(new RTCSessionDescription(data.answer));
+        }
+        if(data && data.ended && activeCall){ toast('Video call diakhiri'); endVideoCall(); }
+      });
+      var unsub1 = answerCandidates.onSnapshot(function(qs){
+        qs.docChanges().forEach(function(change){
+          if(change.type === 'added') pc.addIceCandidate(new RTCIceCandidate(change.doc.data()));
+        });
+      });
+      activeCall.unsubCandidates.push(unsub1);
+    } else {
+      /* Sudah ada offer dari orang lain -> jadi PENERIMA (jawab call) */
+      activeCall.role = 'answerer';
+      pc.onicecandidate = function(event){
+        if(event.candidate) answerCandidates.add(event.candidate.toJSON());
+      };
+      var offerData = snap.data().offer;
+      await pc.setRemoteDescription(new RTCSessionDescription(offerData));
+      var answerDesc = await pc.createAnswer();
+      await pc.setLocalDescription(answerDesc);
+      await callDoc.update({ answer:{ type:answerDesc.type, sdp:answerDesc.sdp }, ended:false, updatedAt:Date.now() });
+
+      activeCall.unsubCallDoc = callDoc.onSnapshot(function(docSnap){
+        var data = docSnap.data();
+        if(data && data.ended && activeCall){ toast('Video call diakhiri'); endVideoCall(); }
+      });
+      var unsub2 = offerCandidates.onSnapshot(function(qs){
+        qs.docChanges().forEach(function(change){
+          if(change.type === 'added') pc.addIceCandidate(new RTCIceCandidate(change.doc.data()));
+        });
+      });
+      activeCall.unsubCandidates.push(unsub2);
+    }
+  } catch(err){
+    console.error('Gagal mulai video call', err);
+    toast('Gagal mulai video call, coba lagi');
+    endVideoCall();
+  }
+}
+function toggleCallMic(){
+  if(!activeCall) return;
+  var track = activeCall.localStream.getAudioTracks()[0];
+  if(!track) return;
+  track.enabled = !track.enabled;
+  var icon = document.getElementById('callMicIcon');
+  var btn = document.getElementById('callMicBtn');
+  icon.className = track.enabled ? 'ti ti-microphone' : 'ti ti-microphone-off';
+  btn.classList.toggle('off', !track.enabled);
+}
+function toggleCallCam(){
+  if(!activeCall) return;
+  var track = activeCall.localStream.getVideoTracks()[0];
+  if(!track) return;
+  track.enabled = !track.enabled;
+  var icon = document.getElementById('callCamIcon');
+  var btn = document.getElementById('callCamBtn');
+  icon.className = track.enabled ? 'ti ti-camera' : 'ti ti-video-off';
+  btn.classList.toggle('off', !track.enabled);
+}
+function endVideoCall(){
+  if(!activeCall) return;
+  var call = activeCall;
+  activeCall = null;
+  try{ if(call.unsubCallDoc) call.unsubCallDoc(); }catch(e){}
+  (call.unsubCandidates||[]).forEach(function(u){ try{ u(); }catch(e){} });
+  try{ if(call.localStream) call.localStream.getTracks().forEach(function(t){ t.stop(); }); }catch(e){}
+  try{ if(call.pc) call.pc.close(); }catch(e){}
+  try{
+    var callDoc = callDocRefFor(call.sessionId);
+    callDoc.set({ ended:true, updatedAt:Date.now() }, {merge:true});
+  }catch(e){}
+  var overlay = document.getElementById('callOverlay');
+  if(overlay) overlay.classList.remove('active');
+  var lv = document.getElementById('callLocalVideo'); if(lv) lv.srcObject = null;
+  var rv = document.getElementById('callRemoteVideo'); if(rv) rv.srcObject = null;
+}
+
+/* ========================== QR ABSENSI ========================== */
+function initQrClassSelect(){
+  var sel = document.getElementById('qrClassSelect');
+  if(!sel) return;
+  if(!state.classes.length){
+    sel.innerHTML = '<option value="">— Tambah kelas dulu di menu "Kelas Saya" —</option>';
+    return;
+  }
+  sel.innerHTML = state.classes.map(function(c){
+    return '<option value="' + c.id + '">' + esc(c.name) + '</option>';
+  }).join('');
+}
+var qrCountdownTimer = null;
+function generateQrSession(){
+  var sel = document.getElementById('qrClassSelect');
+  var classId = sel ? sel.value : '';
+  if(!classId){ toast('Pilih mata kuliah dulu, atau tambah kelas di menu Kelas Saya'); return; }
+  var code = Math.floor(100000 + Math.random()*900000).toString();
+  var now = new Date();
+  var expiry = new Date(now.getTime() + 10*60*1000);
+  if(!state.qrSessions) state.qrSessions = {};
+  state.qrSessions[code] = {classId:classId, code:code, created:now.toISOString(), expiry:expiry.toISOString(), attendees:[]};
+  persistState();
+  var out = document.getElementById('qrOutput');
+  var cls = getClass(classId);
+  /* 1. Set HTML dulu (tanpa elemen QR) */
+  out.innerHTML =
+    '<div style="display:inline-block; background:#fff; border-radius:18px; padding:18px; box-shadow:0 4px 20px rgba(0,0,0,.10);">' +
+      '<div id="qrCanvasWrap" style="display:flex; justify-content:center; margin-bottom:12px;"></div>' +
+      '<div style="font-size:36px; font-weight:900; letter-spacing:9px; color:var(--purple-deep); font-family:monospace; text-align:center;">' + code + '</div>' +
+      '<div style="font-size:12px; color:var(--ink-soft); text-align:center; margin-top:4px;">' + esc(cls?cls.name:'') + '</div>' +
+      '<div id="qrCountdown" style="font-size:12px; color:var(--ink-soft); text-align:center; margin-top:4px;">Berlaku 10:00</div>' +
+    '</div>';
+  /* 2. Setelah HTML ter-render, baru append QR ke wrapper-nya */
+  var wrap = document.getElementById('qrCanvasWrap');
+  if(wrap){
+    try {
+      new QRCode(wrap, {
+        text: code,
+        width: 180,
+        height: 180,
+        colorDark: '#3B1E7A',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    } catch(e){
+      wrap.innerHTML = '<div style="font-size:64px;">🔳</div>';
+    }
+  }
+  /* 3. Countdown */
+  if(qrCountdownTimer) clearInterval(qrCountdownTimer);
+  var expiryMs = expiry.getTime();
+  qrCountdownTimer = setInterval(function(){
+    var left = Math.max(0, Math.round((expiryMs - Date.now()) / 1000));
+    var m = Math.floor(left/60), s = left % 60;
+    var el = document.getElementById('qrCountdown');
+    if(el) el.textContent = left > 0 ? ('Berlaku ' + m + ':' + (s<10?'0':'') + s) : '⛔ Sesi berakhir — generate ulang';
+    if(left <= 0){ clearInterval(qrCountdownTimer); renderQrSessions(); }
+  }, 1000);
+  renderQrSessions();
+  pushNotification('Sesi absensi aktif', 'Kode ' + code + ' berlaku 10 menit untuk ' + (cls?cls.name:''), 'info', 'qrabsensi');
+}
+function submitQrCode(){
+  var code = (document.getElementById('qrCodeInput').value||'').trim().replace(/\s/g,'');
+  var result = document.getElementById('qrScanResult');
+  if(!code || code.length !== 6){ result.innerHTML = '<div style="color:var(--pink-deep); margin-top:8px;">⚠️ Kode harus tepat 6 digit angka.</div>'; return; }
+  if(!state.qrSessions || !state.qrSessions[code]){ result.innerHTML = '<div style="color:var(--pink-deep); margin-top:8px;">❌ Kode tidak ditemukan. Pastikan kodenya benar.</div>'; return; }
+  var session = state.qrSessions[code];
+  var now = new Date();
+  if(new Date(session.expiry) < now){ result.innerHTML = '<div style="color:var(--pink-deep); margin-top:8px;">⏰ Kode sudah kedaluwarsa. Minta dosen generate ulang.</div>'; return; }
+  var myName = (!isGuestMode && currentUser) ? (currentUser.displayName||currentUser.email.split('@')[0]) : 'Tamu';
+  if((session.attendees||[]).indexOf(myName)!==-1){
+    result.innerHTML = '<div style="color:var(--mint-deep); font-weight:700; margin-top:8px;">✅ Kamu sudah tercatat hadir di sesi ini.</div>'; return;
+  }
+  if(!session.attendees) session.attendees = [];
+  session.attendees.push(myName);
+  if(!state.attendance[session.classId]) state.attendance[session.classId] = [];
+  var today = todayStr();
+  if(state.attendance[session.classId].indexOf(today)===-1) state.attendance[session.classId].push(today);
+  persistState();
+  result.innerHTML = '<div style="color:var(--mint-deep); font-weight:700; font-size:16px; margin-top:8px;">✅ Absensi berhasil dicatat!</div>' +
+    '<div class="sub" style="font-size:12px; margin-top:4px;">' + esc(getClass(session.classId)?getClass(session.classId).name:'') + ' — ' + today + '</div>';
+  document.getElementById('qrCodeInput').value = '';
+  renderQrSessions(); renderAttendance();
+  pushNotification('✅ Absensi berhasil', 'Hadir di ' + (getClass(session.classId)?getClass(session.classId).name:'') + ' via kode ' + code, 'success', 'absensi');
+}
+function renderQrSessions(){
+  var list = document.getElementById('qrSessionList');
+  if(!list) return;
+  var sessions = Object.values(state.qrSessions||{});
+  if(!sessions.length){ list.innerHTML = '<div class="empty-state">Belum ada sesi QR yang dibuat.</div>'; return; }
+  var now = new Date();
+  sessions = sessions.slice().sort(function(a,b){ return new Date(b.created) - new Date(a.created); });
+  list.innerHTML = '<div style="font-weight:700; margin-bottom:10px; font-size:14px;">Riwayat sesi absensi</div>' +
+    sessions.map(function(s){
+      var expired = new Date(s.expiry) < now;
+      var cls = getClass(s.classId);
+      var attendeeList = (s.attendees||[]).length
+        ? (s.attendees||[]).map(function(a){ return '<span style="background:var(--lav); border-radius:12px; padding:1px 8px; font-size:11px;">' + esc(a) + '</span>'; }).join(' ')
+        : '<span class="sub" style="font-size:11.5px;">Belum ada yang absen</span>';
+      return '<div style="padding:12px 14px; border-radius:14px; background:var(--card); margin-bottom:10px; box-shadow:var(--shadow-soft);">' +
+        '<div style="display:flex; align-items:center; gap:12px; margin-bottom:6px;">' +
+          '<div style="font-size:22px; font-weight:900; letter-spacing:5px; color:var(--purple-deep); font-family:monospace;">' + s.code + '</div>' +
+          '<div style="flex:1;"><div style="font-weight:600;">' + esc(cls?cls.name:'') + '</div>' +
+          '<div class="sub" style="font-size:11.5px;">' + (s.attendees||[]).length + ' hadir</div></div>' +
+          (expired ? '<span class="pill full" style="font-size:11px;">Kadaluwarsa</span>' : '<span class="pill open" style="font-size:11px;">Aktif</span>') +
+        '</div>' +
+        '<div style="display:flex; flex-wrap:wrap; gap:4px;">' + attendeeList + '</div>' +
+      '</div>';
+    }).join('');
+}
+
+
+/* ========================== AI STUDY PLANNER ========================== */
+function generateStudyPlan(){
+  var output = document.getElementById('studyPlanOutput');
+  var banner = document.getElementById('plannerStatusBanner');
+  if(!output) return;
+  var pending = (state.tasks||[]).filter(function(t){ return !t.done; }).sort(function(a,b){ return a.deadline<b.deadline?-1:1; });
+  if(!pending.length){
+    output.innerHTML = '<div class="empty-state">Semua tugas sudah selesai! Gak ada yang perlu direncanakan 🎉</div>';
+    return;
+  }
+  var taskSummary = pending.map(function(t){
+    return '- ' + t.title + ' (' + (getClass(t.classId)?getClass(t.classId).name:'') + ') deadline: ' + t.deadline;
+  }).join('\n');
+  var today = todayStr();
+  var prompt = 'Kamu adalah asisten study planner untuk mahasiswa. Buatkan jadwal belajar rinci dan realistis dalam Bahasa Indonesia untuk tugas-tugas berikut mulai dari hari ini (' + today + ').\n\nDaftar tugas:\n' + taskSummary + '\n\nBuatkan rencana belajar harian yang efisien, mulai dari tugas yang paling dekat deadlinenya. Sertakan juga tips belajar singkat dan pengingat istirahat. Format output: per hari, jam belajar, mata kuliah, dan target yang ingin dicapai. Jangan terlalu panjang, maksimal 400 kata.';
+  output.innerHTML = '<div class="chat-empty"><i class="ti ti-loader" style="font-size:26px; animation:spin 1s linear infinite;"></i><div>AI sedang membuat rencana belajar untukmu...</div></div>';
+  if(banner){ banner.style.display='block'; banner.innerHTML='<i class="ti ti-brain"></i> Sedang menganalisis ' + pending.length + ' tugas pending...'; }
+  var apiKey = getAiApiKey();
+  var useProxy = isProxyMode();
+  if(!apiKey && !useProxy){
+    setTimeout(function(){
+      var plan = simulateStudyPlan(pending);
+      output.innerHTML = plan;
+      if(banner){ banner.style.display='none'; }
+      pushNotification('Study Plan siap!', 'Rencana belajar untuk ' + pending.length + ' tugas sudah dibuat.', 'success', 'studyplanner');
+    }, 800);
+    return;
+  }
+  var messages = [{role:'user', content:[{type:'text', text:prompt}]}];
+  var fetchPromise;
+  if(useProxy){
+    fetchPromise = fetch(AI_PROXY_URL, {
+      method:'POST', headers:{'content-type':'application/json'},
+      body:JSON.stringify({system_instruction:{parts:[{text:'Kamu asisten belajar mahasiswa Indonesia yang membantu membuat jadwal belajar efektif.'}]}, contents:[{role:'user', parts:[{text:prompt}]}]})
+    }).then(function(r){ return r.json(); }).then(function(d){
+      var cand=(d.candidates||[])[0]; var parts=cand&&cand.content&&cand.content.parts?cand.content.parts:[];
+      return parts.map(function(p){ return p.text||''; }).filter(Boolean).join('\n') || simulateStudyPlan(pending);
+    });
+  } else if(getAiProvider()==='gemini'){
+    fetchPromise = callGeminiApi(apiKey);
+  } else {
+    fetchPromise = fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'content-type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:CLAUDE_MODEL, max_tokens:1000, system:'Kamu asisten belajar mahasiswa Indonesia.', messages:messages})
+    }).then(function(r){ return r.json(); }).then(function(d){
+      return (d.content||[]).map(function(b){ return b.type==='text'?b.text:''; }).filter(Boolean).join('\n');
+    });
+  }
+  fetchPromise.then(function(text){
+    output.innerHTML = '<div style="background:var(--card); border-radius:14px; padding:18px; box-shadow:var(--shadow-soft); line-height:1.7; white-space:pre-wrap; font-size:14px;">' + esc(text).replace(/\n/g,'<br>') + '</div>';
+    if(banner) banner.style.display='none';
+    pushNotification('Study Plan siap!', 'Rencana belajar untuk ' + pending.length + ' tugas sudah dibuat.', 'success', 'studyplanner');
+  }).catch(function(err){
+    output.innerHTML = '<div class="empty-state">Gagal generate rencana: ' + esc(err.message) + '. Coba pastikan API key sudah diset di Tanya AI.</div>';
+    if(banner) banner.style.display='none';
+  });
+}
+function simulateStudyPlan(tasks){
+  var today = new Date();
+  var lines = ['<div style="background:var(--card); border-radius:14px; padding:18px; box-shadow:var(--shadow-soft); line-height:1.8; font-size:14px;">'];
+  lines.push('<b>📋 Rencana Belajar (Mode Simulasi)</b><br><br>');
+  lines.push('<i>Sambungkan AI di menu Tanya AI untuk rencana yang lebih personal dan detail.</i><br><br>');
+  tasks.slice(0,5).forEach(function(t, i){
+    var d = new Date(t.deadline+'T00:00:00');
+    var diff = Math.max(0, Math.round((d-today)/86400000));
+    var cls = getClass(t.classId);
+    lines.push('<b>📌 ' + esc(t.title) + '</b><br>');
+    lines.push('Mata kuliah: ' + esc(cls?cls.name:'') + ' · Deadline: ' + esc(t.deadline) + ' (' + diff + ' hari lagi)<br>');
+    if(diff <= 1) lines.push('⚠️ <b>URGENT</b> — kerjakan hari ini juga!<br>');
+    else if(diff <= 3) lines.push('⏰ Mulai hari ini, targetkan selesai ' + diff + ' hari ke depan.<br>');
+    else lines.push('📅 Bisa mulai besok, sisihkan ' + Math.ceil(diff/2) + ' sesi belajar @1–2 jam.<br>');
+    lines.push('<br>');
+  });
+  lines.push('<b>💡 Tips umum:</b><br>Gunakan teknik Pomodoro (25 menit fokus + 5 menit istirahat). Prioritaskan tugas yang paling dekat deadline. Jangan lupa makan dan istirahat cukup!');
+  lines.push('</div>');
+  return lines.join('');
+}
+
+/* ========================== NAV & INIT ========================== */
+document.querySelectorAll('[data-view]').forEach(function(el){
+  el.addEventListener('click', function(){
+    var target = el.getAttribute('data-view');
+    document.querySelectorAll('.navitem').forEach(function(n){ n.classList.remove('active'); });
+    var navMatch = document.querySelector('.navitem[data-view="' + target + '"]');
+    if(navMatch){ navMatch.classList.add('active'); }
+    document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+    var view = document.getElementById('view-' + target);
+    if(view){ view.classList.add('active'); }
+    window.scrollTo(0,0);
+  });
+});
+
+function renderAll(){
+  decayStreakIfNeeded();
+  renderClasses();
+  renderLab();
+  renderSchedule();
+  renderTasks();
+  renderChat();
+  renderStudyGroups();
+  renderAchievement();
+  renderAttendance();
+  renderAiMessages();
+  renderNilai();
+  renderKRS();
+  renderMateriClassOptions();
+  renderMateri();
+  renderProfileSidebar();
+  updateNotifBadge();
+  renderZoomSessions();
+  initQrClassSelect();
+  renderQrSessions();
+  checkDeadlineNotifications();
+}
+function initApp(){
+  var ok = initFirebase();
+  if(!ok){
+    /* Firebase belum di-setup, biarkan layar login muncul dengan opsi mode tamu */
+    switchAuthTab('login');
+    return;
+  }
+  fbAuth.onAuthStateChanged(function(user){
+    if(user){
+      isGuestMode = false;
+      currentUser = user;
+      state = JSON.parse(JSON.stringify(defaultState));
+      startFirestoreSync(user.uid);
+      enterApp({displayName: user.displayName, email: user.email});
+    } else if(!isGuestMode){
+      currentUser = null;
+      showLoginScreen();
+    }
+  });
+  switchAuthTab('login');
+}
+initApp();
+</script>
+
+</body>
+</html>
